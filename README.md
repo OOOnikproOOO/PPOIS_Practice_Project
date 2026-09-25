@@ -51,6 +51,7 @@
 - Демонстрация и защита готового проекта.
 
 
+
 <p align="left">
-  <img src="https://i.pinimg.com/736x/f9/59/c6/f959c6070f7c7490479f53e32beb5994.jpg" width="300" alt="Octocat">
+  <img src="https://images.meme-arsenal.com/a295368022d7cdf57bda4d726dc8820c.jpg" width="500" alt="Octocat">
 </p>
