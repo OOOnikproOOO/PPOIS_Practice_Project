@@ -18,6 +18,7 @@ cmake-build-*/
 # Файлы сред разработки (IDE)
 .idea/
 .vscode/
+.vs/
 *.sln
 *.vcxproj
 *.vcxproj.filters
