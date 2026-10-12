@@ -17,12 +17,16 @@ public:
 
     virtual bool CheckAnswer(const std::string& user_input) const = false;
 
-    int GetCost() const {
-        return cost; 
+    int GetId() const {
+        return id;
     }
-
+    
     int GetCategoryId() const { 
         return category_id; 
+    }
+
+    int GetCost() const {
+        return cost;
     }
 
     std::string GetText() const { 
