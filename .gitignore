@@ -1,0 +1,35 @@
+# Скомпилированные файлы и бинарники
+*.o
+*.obj
+*.out
+*.exe
+*.dll
+*.so
+*.dylib
+*.a
+*.lib
+
+# Папки сборок (CMake и другие системы сборки)
+build/
+out/
+bin/
+cmake-build-*/
+
+# Файлы сред разработки (IDE)
+.idea/
+.vscode/
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.suo
+
+# Локальные базы данных SQLite (чтобы тестовые данные участников не конфликтовали)
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+
+# Системные файлы ОС
+.DS_Store
+Thumbs.db
