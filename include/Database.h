@@ -12,6 +12,7 @@ public:
     Database(const std::string& db_path);
     ~Database();
 
+    void Initialize();
     void LoadCategories(DataManager<Category>& category_manager);
     void LoadQuestions(DataManager<IQuestion>& question_manager);
 

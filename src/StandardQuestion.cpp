@@ -12,6 +12,9 @@ bool StandardQuestion::CheckAnswer(const std::string& user_input) const {
     if (user_input == primary_answer)
         return true;
 
-    auto it = std::find(alternative_answers.begin(), alternative_answers.end(), user_input); // Iterator
-    return it != alternative_answers.end();
+    for (const auto& alt : alternative_answers) {
+        if (user_input == alt) 
+            return true;
+    }
+    return false;
 }

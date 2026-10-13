@@ -4,13 +4,15 @@
 
 void GameSession::ProcessResult(int points, bool is_correct, int question_id) {
     played_question_ids.push_back(question_id);
-
+    
     if (is_correct) {
         the_score += points;
         correct_answers++;
     }
-    else
+    else {
+        the_score -= points;
         incorrect_answers++;
+    }
 }
 
 bool GameSession::IsQuestionPlayed(int question_id) const {

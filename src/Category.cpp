@@ -3,7 +3,7 @@
 #include <memory>
 #include "Category.h"
 
-Category::Category(int cat_id, std::string cat_name) : id(cat_id), name(std::move(cat_name)) {
+Category::Category(int cat_id, std::string& cat_name) : id(cat_id), name(std::move(cat_name)) {
 
 }
 
@@ -15,7 +15,7 @@ int Category::GetId() const {
     return id;
 }
 
-std::string Category::get_name() const {
+std::string Category::GetName() const {
     return name;
 }
 
