@@ -8,25 +8,15 @@
 
 class Category {
 public:
-    Category(int cat_id, std::string cat_name) : id(cat_id), name(std::move(cat_name)) {
-    
-    }
+    Category(int cat_id, std::string& cat_name);
 
-    void AddQuestion(std::shared_ptr<IQuestion> question) {
-        questions.push_back(question);
-    }
+    void AddQuestion(std::shared_ptr<IQuestion> question);
 
-    int GetId() const {
-        return id; 
-    }
+    int GetId() const;
 
-    std::string get_name() const {
-        return name;
-    }
+    std::string GetName() const;
 
-    const std::vector<std::shared_ptr<IQuestion>>& GetQuestions() const {
-        return questions;
-    }
+    const std::vector<std::shared_ptr<IQuestion>>& GetQuestions() const;
 
 private:
     int id;

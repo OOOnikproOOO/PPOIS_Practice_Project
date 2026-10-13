@@ -12,29 +12,16 @@ enum class GameMode { Training, Classic };
 
 class Game {
 public:
-    Game() : the_mode(GameMode::Classic) {
-    
-    }
+    Game();
 
-    void SetMode(GameMode mode) : the_mode(mode) {
+    void SetMode(GameMode mode);
 
-    }
-
-    void GenerateBoard(const std::vector<std::shared_ptr<Category>>& selected_categories) : active_categories(selected_categories) {
-
-    }
+    void GenerateBoard(const std::vector<std::shared_ptr<Category>>& selected_categories);
 
     // Processing the user response
-    bool AnswerQuestion(std::shared_ptr<IQuestion> question, const std::string& user_input) {
-        bool is_correct = question->CheckAnswer(user_input);
-        session.ProcessResult(question->GetCost(), is_correct, question->GetId());
+    bool AnswerQuestion(std::shared_ptr<IQuestion> question, const std::string& user_input);
 
-        return is_correct;
-    }
-
-    const GameSession& GetSession() const {
-        return session;
-    }
+    const GameSession& GetSession() const;
 
 private:
     GameSession session;
