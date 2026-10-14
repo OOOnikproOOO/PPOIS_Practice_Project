@@ -9,10 +9,11 @@ void GameSession::ProcessResult(int points, bool is_correct, int question_id) {
         the_score += points;
         correct_answers++;
     }
-    else {
-        the_score -= points;
-        incorrect_answers++;
-    }
+    else
+        if (points > 0) {
+            the_score -= points;
+            incorrect_answers++;
+        }
 }
 
 bool GameSession::IsQuestionPlayed(int question_id) const {

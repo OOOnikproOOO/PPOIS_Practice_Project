@@ -4,6 +4,8 @@
 #include <sstream>
 #include "Database.h"
 #include "StandardQuestion.h"
+#include "ImageQuestion.h"
+#include "AudioQuestion.h"
 
 std::vector<std::string> SplitString(const std::string& str, char delimiter) {
     std::vector<std::string> tokens;
@@ -33,12 +35,15 @@ Database::~Database() {
 
 void Database::Initialize() {
     const char* sql = R"(
-        CREATE TABLE IF NOT EXISTS categories (
+        DROP TABLE IF EXISTS questions;
+        DROP TABLE IF EXISTS categories;
+
+        CREATE TABLE categories (
             id INTEGER PRIMARY KEY,
             name TEXT UNIQUE
         );
 
-        CREATE TABLE IF NOT EXISTS questions (
+        CREATE TABLE questions (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             category_id INTEGER,
             cost INTEGER NOT NULL,
@@ -46,7 +51,10 @@ void Database::Initialize() {
             difficulty TEXT,
             correct_answer TEXT NOT NULL,
             alternatives TEXT,
-            FOREIGN KEY (category_id) REFERENCES categories (id)
+            type TEXT DEFAULT 'standard',
+            media_path TEXT DEFAULT '',
+            FOREIGN KEY (category_id) REFERENCES categories (id),
+            UNIQUE(category_id, cost)
         );
 
         -- ==========================================
@@ -221,9 +229,9 @@ void Database::Initialize() {
         VALUES (9, 500, 'Сейчас в Китае блюдо ИЗ НЕЁ запрещено. Чтобы достать её, придётся давать взятку в ресторане.', 'Сложно', 'Медвежья лапа', 'Медвежья лапа|медвежья лапа|Медвежьей лапы|медвежьей лапы|Лапы медведя|лапы медведя');
 
         -- ==========================================
-        -- Тема 10: Буратино был тупой (и не только он)
+        -- Тема 10: Буратино был тупой и не только он
         -- ==========================================
-        INSERT OR IGNORE INTO categories (id, name) VALUES (10, 'Буратино был тупой');
+        INSERT OR IGNORE INTO categories (id, name) VALUES (10, 'Буратино был тупой и не только он');
         INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
         VALUES (10, 100, '«Для них каждый день безумнее предыдущего», — теглайн ЭТОГО ФИЛЬМА 1994 года.', 'Легко', '«Тупой и еще тупее»', '«Тупой и еще тупее»|"Тупой и еще тупее"|«тупой и еще тупее»|"тупой и еще тупее"|«Тупой и ещё тупее»|"Тупой и ещё тупее"|«тупой и ещё тупее»|"тупой и ещё тупее"|Тупой и еще тупее|тупой и еще тупее|Тупой и ещё тупее|тупой и ещё тупее');
         
@@ -231,7 +239,7 @@ void Database::Initialize() {
         VALUES (10, 200, 'Интересно, что ЭТА СОЦИАЛЬНАЯ РЕКЛАМА (Dumb ways to die) была заблокирована в России за пропаганду суицида.', 'Легко', '«Глупые способы умереть»', '«Глупые способы умереть»|"Глупые способы умереть"|«глупые способы умереть»|"глупые способы умереть"|Глупые способы умереть|глупые способы умереть|«Тупые способы умереть»|"Тупые способы умереть"|«тупые способы умереть»|"тупые способы умереть"|Тупые способы умереть|тупые способы умереть');
         
         INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
-        VALUES (10, 300, 'На специальных сайтах, посвящённых ИМ, в первую очередь показан список штатов США.', 'Средне', 'Глупые законы', 'Глупые законы|глупые законы|Тупые законы|тупые законы');
+        VALUES (10, 300, 'На специальных сайтах, посвящённых ИМ, в первую очередь показан список штатов США.', 'Средне', 'Глупые законы', 'Глупым законам|глупым законам|Тупым законам|тупым законам|Глупые законы|глупые законы|Тупые законы|тупые законы');
         
         INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
         VALUES (10, 400, 'Эпизод сериала «Глупые симфонии» под названием «Маленькая мудрая курочка» стал дебютом для ЭТОГО ПЕРСОНАЖА.', 'Сложно', 'Дональд Дак', 'Дональд Дак|дональд дак|Дональд дак|дональд Дак|Donald Duck|Donald duck|donald Duck|donald duck');
@@ -365,7 +373,7 @@ void Database::LoadCategories(DataManager<Category>& category_manager) {
 }
 
 void Database::LoadQuestions(DataManager<IQuestion>& question_manager) {
-    const char* sql = "SELECT id, category_id, cost, text, difficulty, correct_answer, alternatives FROM questions;";
+    const char* sql = "SELECT id, category_id, cost, text, difficulty, correct_answer, alternatives, type, media_path FROM questions;";
     sqlite3_stmt* stmt;
 
     if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
@@ -381,16 +389,31 @@ void Database::LoadQuestions(DataManager<IQuestion>& question_manager) {
         const unsigned char* diff_ptr = sqlite3_column_text(stmt, 4);
         const unsigned char* ans_ptr = sqlite3_column_text(stmt, 5);
         const unsigned char* alts_ptr = sqlite3_column_text(stmt, 6);
+        const unsigned char* type_ptr = sqlite3_column_text(stmt, 7);
+        const unsigned char* media_ptr = sqlite3_column_text(stmt, 8);
 
         std::string text = text_ptr ? reinterpret_cast<const char*>(text_ptr) : "";
         std::string diff = diff_ptr ? reinterpret_cast<const char*>(diff_ptr) : "";
         std::string answer = ans_ptr ? reinterpret_cast<const char*>(ans_ptr) : "";
         std::string alts_raw = alts_ptr ? reinterpret_cast<const char*>(alts_ptr) : "";
-        
+        std::string type = type_ptr ? reinterpret_cast<const char*>(type_ptr) : "standard";
+        std::string media_path = media_ptr ? reinterpret_cast<const char*>(media_ptr) : "";
+
         std::vector<std::string> alts = SplitString(alts_raw, '|');
 
-        auto question = std::make_shared<StandardQuestion>(id, cat_id, cost, text, diff, answer, alts);
-        question_manager.Add(question);
+        if (type == "image") {
+            auto question = std::make_shared<ImageQuestion>(id, cat_id, cost, text, diff, answer, alts, media_path);
+            question_manager.Add(question);
+        }
+        else 
+            if (type == "audio") {
+                auto question = std::make_shared<AudioQuestion>(id, cat_id, cost, text, diff, answer, alts, media_path);
+                question_manager.Add(question);
+            }
+            else {
+                auto question = std::make_shared<StandardQuestion>(id, cat_id, cost, text, diff, answer, alts);
+                question_manager.Add(question);
+            }
     }
 
     sqlite3_finalize(stmt);

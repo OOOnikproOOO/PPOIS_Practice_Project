@@ -10,8 +10,6 @@ int main() {
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
 
-    cout << "Запуск игрового движка..." << endl;
-
     try {
         Database db("game_data.db");
         db.Initialize();
@@ -29,11 +27,22 @@ int main() {
             cout << "\n=======================================" << endl;
             cout << " ВАШ СЧЕТ: " << session.GetScore() << endl;
             cout << "=======================================" << endl;
-            cout << "Выберите Тему и введите её ID (или 0 для выхода): " << endl;
+            cout << endl << "Выберите Тему и введите её ID (или 0 для выхода): " << endl;
 
             auto categories = cat_manager.GetAll();
+            auto all_questions = q_manager.GetAll();
+
             for (const auto& cat : categories) {
-                cout << cat->GetId() << ". " << cat->GetName() << endl;
+                bool has_active_questions = false;
+                for (const auto& question_item : all_questions) {
+                    if (question_item->GetCategoryId() == cat->GetId() && !session.IsQuestionPlayed(question_item->GetId())) {
+                        has_active_questions = true;
+                        break;
+                    }
+                }
+
+                if (has_active_questions)
+                    cout << cat->GetId() << ". " << cat->GetName() << endl;
             }
 
             int cat_id;
@@ -80,13 +89,21 @@ int main() {
                 cout << "\nВаш ответ >>> ";
                 getline(cin, user_answer);
 
-                bool is_correct = selected_q->CheckAnswer(user_answer);
-                session.ProcessResult(selected_q->GetCost(), is_correct, selected_q->GetId());
+                if (user_answer.empty()) {
+                    cout << "\nВопрос пропущен! Правильный ответ: " << selected_q->GetPrimaryAnswer() << endl;
+                    session.ProcessResult(0, false, selected_q->GetId());
+                }
+                else {
+                    bool is_correct = selected_q->CheckAnswer(user_answer);
+                    session.ProcessResult(selected_q->GetCost(), is_correct, selected_q->GetId());
 
-                if (is_correct)
-                    cout << "\n✅ ПРАВИЛЬНО! Вы заработали " << selected_q->GetCost() << " очков." << endl;
-                else
-                    cout << "\n❌ НЕВЕРНО! Правильный ответ: " << selected_q->GetPrimaryAnswer() << endl;
+                    if (is_correct)
+                        cout << "\n✅ ПРАВИЛЬНО! Вы заработали " << selected_q->GetCost() << " очков." << endl;
+                    else {
+                        cout << "\n❌ НЕВЕРНО! Вы потеряли " << selected_q->GetCost() << " очков." << endl;
+                        cout << "Правильный ответ: " << selected_q->GetPrimaryAnswer() << endl;
+                    }
+                }
             }
             else
                 cout << "Вопрос с такой ценой не найден или уже сыгран." << endl;
