@@ -1,0 +1,60 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "master", "main", "feature-core_logic" ]
+    tags:
+      - "v*.*.*"
+  pull_request:
+    branches: [ "master", "main" ]
+
+jobs:
+  build-and-test:
+    name: Build & Run Tests (Windows)
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure CMake
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build QuizCore, OwnGame and UnitTests
+        run: cmake --build build --config Release
+
+      - name: Run Unit Tests
+        run: |
+          cd build
+          ctest -C Release --output-on-failure
+
+  create-release:
+    name: Publish Release Binary
+    needs: build-and-test
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure CMake
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build Release
+        run: cmake --build build --config Release
+
+      - name: Prepare Release Bundle
+        shell: pwsh
+        run: |
+          mkdir release_bundle
+          Copy-Item "build/Release/OwnGame.exe" -Destination "release_bundle/"
+          Copy-Item "assets" -Destination "release_bundle/assets" -Recurse
+          Compress-Archive -Path "release_bundle/*" -DestinationPath "OwnGame-Windows-x64.zip"
+
+      - name: Upload Release Asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: OwnGame-Windows-x64.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
