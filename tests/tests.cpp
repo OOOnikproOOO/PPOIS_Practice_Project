@@ -6,6 +6,7 @@
 #include <filesystem>
 #include <fstream>
 
+#include "Game.h"
 #include "Category.h"
 #include "DataManager.h"
 #include "GameSession.h"
@@ -287,4 +288,35 @@ TEST(DatabaseTest, InvalidDatabasePathThrows) {
         Database bad_db("Z:\\non_existent_drive\\invalid.db");
         bad_db.Initialize();
         }, std::runtime_error);
+}
+
+TEST(GameClassTest, ModeAndSessionIntegration) {
+    Game game;
+    game.SetMode(GameMode::Training);
+    EXPECT_EQ(game.GetSession().GetScore(), 0);
+
+    std::string cat_name = "Тестовая категория";
+    auto cat = std::make_shared<Category>(100, cat_name);
+
+    std::string q_text = "Вопрос?";
+    std::string diff = "Легко";
+    std::string ans = "Ответ";
+    std::vector<std::string> alts = { "Ответ", "ответ" };
+    auto q = std::make_shared<StandardQuestion>(501, 100, 300, q_text, diff, ans, alts);
+
+    cat->AddQuestion(q);
+    EXPECT_EQ(cat->GetQuestions().size(), 1);
+
+    std::vector<std::shared_ptr<Category>> cats = { cat };
+    EXPECT_NO_THROW(game.GenerateBoard(cats));
+
+    bool is_ok = game.AnswerQuestion(q, "ответ");
+    EXPECT_TRUE(is_ok);
+    EXPECT_EQ(game.GetSession().GetScore(), 300);
+    EXPECT_TRUE(game.GetSession().IsQuestionPlayed(501));
+
+    auto q2 = std::make_shared<StandardQuestion>(502, 100, 200, q_text, diff, ans, alts);
+    bool is_wrong = game.AnswerQuestion(q2, "неправильно");
+    EXPECT_FALSE(is_wrong);
+    EXPECT_EQ(game.GetSession().GetScore(), 100);
 }
