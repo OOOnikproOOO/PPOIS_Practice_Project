@@ -3,14 +3,16 @@ name: CI/CD Pipeline
 on:
   push:
     branches: [ "master", "main", "feature-core_logic" ]
-    tags:
-      - "v*.*.*"
+    tags: [ "v*" ]
   pull_request:
     branches: [ "master", "main" ]
 
+permissions:
+  contents: write
+
 jobs:
-  build-and-test:
-    name: Build & Run Tests (Windows)
+  quality:
+    name: Build, Test & Coverage (Windows)
     runs-on: windows-latest
 
     steps:
@@ -18,43 +20,63 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Configure CMake
-        run: cmake -B build -DCMAKE_BUILD_TYPE=Release
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Debug
 
       - name: Build QuizCore, OwnGame and UnitTests
-        run: cmake --build build --config Release
+        run: cmake --build build --config Debug
 
-      - name: Run Unit Tests
+      - name: Install OpenCppCoverage
+        run: choco install opencppcoverage -y
+
+      - name: Run Tests with Code Coverage
+        shell: pwsh
         run: |
-          cd build
-          ctest -C Release --output-on-failure
+          $env:Path = "C:\Program Files\OpenCppCoverage;" + $env:Path
+          OpenCppCoverage.exe `
+            --sources "$PWD\src" `
+            --sources "$PWD\include" `
+            --export_type "html:coverage_report" `
+            -- "build\Debug\UnitTests.exe"
 
-  create-release:
-    name: Publish Release Binary
-    needs: build-and-test
-    if: startsWith(github.ref, 'refs/tags/v')
+      - name: Upload Coverage Report Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-coverage-report
+          path: coverage_report/
+
+  release:
+    name: Build Windows Release & Publish
+    needs: quality
     runs-on: windows-latest
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/feature-core_logic' || startsWith(github.ref, 'refs/tags/v'))
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Configure CMake
+      - name: Configure CMake (Release)
         run: cmake -B build -DCMAKE_BUILD_TYPE=Release
 
       - name: Build Release
         run: cmake --build build --config Release
 
-      - name: Prepare Release Bundle
+      - name: Package Artifact
         shell: pwsh
         run: |
-          mkdir release_bundle
-          Copy-Item "build/Release/OwnGame.exe" -Destination "release_bundle/"
-          Copy-Item "assets" -Destination "release_bundle/assets" -Recurse
-          Compress-Archive -Path "release_bundle/*" -DestinationPath "OwnGame-Windows-x64.zip"
+          mkdir dist
+          Copy-Item "build/Release/OwnGame.exe" -Destination "dist/"
+          Copy-Item "assets" -Destination "dist/assets" -Recurse
+          Compress-Archive -Path "dist/*" -DestinationPath "OwnGame-Windows-x64.zip" -Force
 
-      - name: Upload Release Asset
+      - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           files: OwnGame-Windows-x64.zip
+          tag_name: ${{ startsWith(github.ref, 'refs/tags/v') && github.ref_name || 'v0.1.0-preview' }}
+          name: "OwnGame Release ${{ startsWith(github.ref, 'refs/tags/v') && github.ref_name || 'v0.1.0 (Preview)' }}"
+          body: |
+            Автоматическая сборка игры "Своя игра" (OwnGame).
+            В архиве: исполняемый файл `OwnGame.exe` и директория `assets` с мультимедиа-ресурсами.
+          target_commitish: ${{ github.ref_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
