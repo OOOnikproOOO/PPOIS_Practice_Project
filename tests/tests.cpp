@@ -262,3 +262,29 @@ TEST(AssetsWorkTest, PathResolvingVariants) {
 TEST(AssetsWorkTest, StopAudioWhenNotPlaying) {
     EXPECT_NO_THROW(StopAudioBackground());
 }
+
+TEST(DatabaseHelperTest, SplitStringTrimmingAndEmpty) {
+    std::string sample = "Москва.|Минск|Киев.";
+    auto result = SplitString(sample, '|');
+    ASSERT_EQ(result.size(), 3);
+    EXPECT_EQ(result[0], "Москва");
+    EXPECT_EQ(result[1], "Минск");
+    EXPECT_EQ(result[2], "Киев");
+
+    auto empty_res = SplitString("", '|');
+    EXPECT_TRUE(empty_res.empty());
+}
+
+TEST(AssetsWorkTest, AudioPlaybackTriggers) {
+    EXPECT_NO_THROW(PlayAudioBackground("assets/audio/komarovo.mp3"));
+    EXPECT_NO_THROW(StopAudioBackground());
+
+    EXPECT_NO_THROW(PlayAudioBackground("invalid_audio_file_path.mp3"));
+}
+
+TEST(DatabaseTest, InvalidDatabasePathThrows) {
+    EXPECT_THROW({
+        Database bad_db("Z:\\non_existent_drive\\invalid.db");
+        bad_db.Initialize();
+        }, std::runtime_error);
+}
