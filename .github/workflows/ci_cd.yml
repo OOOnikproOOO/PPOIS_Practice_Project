@@ -32,11 +32,28 @@ jobs:
         shell: pwsh
         run: |
           $env:Path = "C:\Program Files\OpenCppCoverage;" + $env:Path
+          
           OpenCppCoverage.exe `
             --sources "$PWD\src" `
             --sources "$PWD\include" `
             --export_type "html:coverage_report" `
+            --export_type "cobertura:coverage.xml" `
             -- "build\Debug\UnitTests.exe"
+
+          [xml]$covXml = Get-Content coverage.xml
+          $lineRate = [double]$covXml.coverage.'line-rate'
+          $totalCoverage = [math]::Round($lineRate * 100, 2)
+
+          Write-Host ""
+          Write-Host "==================================================" -ForegroundColor Cyan
+          Write-Host "   TOTAL PROJECT COVERAGE: $totalCoverage %" -ForegroundColor Green
+          Write-Host "==================================================" -ForegroundColor Cyan
+          Write-Host ""
+
+          if ($totalCoverage -lt 90.0) {
+              Write-Error "Total code coverage ($totalCoverage%) is below 90% threshold!"
+              exit 1
+          }
 
       - name: Upload Coverage Report Artifact
         uses: actions/upload-artifact@v4
