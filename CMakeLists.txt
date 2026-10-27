@@ -19,3 +19,7 @@ add_custom_command(
     COMMAND ${CMAKE_COMMAND} -E rm -f "${CMAKE_CURRENT_BINARY_DIR}/game_data.db"
     COMMENT "Очистка старого файла базы данных game_data.db перед новой сборкой..."
 )
+
+if(WIN32)
+    target_link_libraries(OwnGame PRIVATE winmm)
+endif()

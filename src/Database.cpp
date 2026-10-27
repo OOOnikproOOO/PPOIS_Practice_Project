@@ -341,6 +341,44 @@ void Database::Initialize() {
         
         INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
         VALUES (15, 500, 'В ЭТОЙ ОБСЕРВАТОРИИ был открыт астероид, получивший название «Даша».', 'Сложно', 'Крымская астрофизическая обсерватория', 'Крымская астрофизическая обсерватория|крымская астрофизическая обсерватория|Крымской астрофизической обсерватории|крымской астрофизической обсерватории|Крымская обсерватория|крымская обсерватория|Крымской обсерватории|крымской обсерватории|Крымская астрофизическая|крымская астрофизическая|Крымской астрофизической|крымской астрофизической');
+
+        -- ==========================================
+        -- Тема 16: Чудеса Света
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (16, 'Чудеса Света');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives, type, media_path) 
+        VALUES (16, 100, 'Единственное из семи древних чудес, сохранившееся до наших дней. Назовите эту пирамиду.', 'Легко', 'Пирамида Хеопса', 'Пирамида Хеопса|пирамида Хеопса|пирамида хеопса|Пирамида хеопса|Хеопса|хеопса|Хеопс|хеопс|Великая пирамида Гизы|великая пирамида гизы', 'image', 'assets/images/cheops_pyramid.jpg');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives, type, media_path) 
+        VALUES (16, 200, 'Какое легендарное ступенчатое сооружение с садами в Вавилоне изображено на гравюре?', 'Легко', 'Висячие сады Семирамиды', 'Висячие сады Семирамиды|висячие сады Семирамиды|висячие сады семирамиды|Висячие сады|висячие сады|Сады Семирамиды|сады Семирамиды|сады семирамиды', 'image', 'assets/images/hanging_gardens.jpg');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives, type, media_path) 
+        VALUES (16, 300, 'Назовите колоссальное навигационное сооружение на острове Фарос возле египетского побережья.', 'Средне', 'Александрийский маяк', 'Александрийский маяк|александрийский маяк|Фаросский маяк|фаросский маяк|Маяк в Александрии|маяк в александрии', 'image', 'assets/images/alexandria_lighthouse.jpg');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives, type, media_path) 
+        VALUES (16, 400, 'Перед вами реконструкция гигантской бронзовой статуи бога солнца Гелиоса. Как называлось это чудо?', 'Сложно', 'Колосс Родосский', 'Колосс Родосский|колосс Родосский|колосс родосский|Колосс родосский|Родосский колосс|родосский колосс|Колосс|колосс', 'image', 'assets/images/colossus_rhodes.jpg');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives, type, media_path) 
+        VALUES (16, 500, 'Назовите античную монументальную гробницу карийского правителя Мавсола, давшую имя всем подобным сооружениям.', 'Сложно', 'Мавзолей в Галикарнасе', 'Мавзолей в Галикарнасе|мавзолей в Галикарнасе|мавзолей в галикарнасе|Галикарнасский мавзолей|галикарнасский мавзолей|Галикарнас|галикарнас', 'image', 'assets/images/halicarnassus_mausoleum.jpg');
+
+        -- ==========================================
+        -- Тема 17: Родом из СССР
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (17, 'Родом из СССР');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives, type, media_path) 
+        VALUES (17, 100, 'Прослушайте Игоря Скляра и дайте название его песни.', 'Легко', 'Комарово', 'Комарово|комарово', 'audio', 'assets/audio/komarovo.mp3');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives, type, media_path) 
+        VALUES (17, 200, 'Прослушайте хит Аллы Пугачевой и дайте название её песни.', 'Легко', 'Арлекино', 'Арлекино|арлекино|Арлекин|арлекин', 'audio', 'assets/audio/arlekino.mp3');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives, type, media_path) 
+        VALUES (17, 300, 'Прослушайте детскую песню композитора Евгения Крылатова на стихи Юрия Энтина и дайте её название.', 'Средне', 'Крылатые качели', 'Крылатые качели|крылатые качели', 'audio', 'assets/audio/krylatye_kacheli.mp3');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives, type, media_path) 
+        VALUES (17, 400, 'Прослушайте Ларису Долину и дайте название её песни.', 'Сложно', 'Три белых коня', 'Три белых коня|три белых коня', 'audio', 'assets/audio/tri_belyh_konya.mp3');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives, type, media_path) 
+        VALUES (17, 500, 'Прослушайте трек известной советской детской песни Владимира Шаинского и дайте её название.', 'Сложно', 'Голубой вагон', 'Голубой вагон|голубой вагон', 'audio', 'assets/audio/goluboy_vagon.mp3');
     )";
 
     char* error_msg = nullptr;

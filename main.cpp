@@ -3,6 +3,9 @@
 #include <string>
 #include "Database.h"
 #include "GameSession.h"
+#include "ImageQuestion.h"
+#include "AudioQuestion.h"
+#include "AssetsWork.h"
 
 using namespace std;
 
@@ -86,8 +89,21 @@ int main() {
             if (selected_q) {
                 cout << "\nВнимание! Вопрос:" << endl;
                 cout << selected_q->GetText() << endl;
+                
+                if (auto img_q = dynamic_pointer_cast<ImageQuestion>(selected_q)) {
+                    cout << "[>>> Открытие изображения <<<]" << endl;
+                    OpenImageInViewer(img_q->GetImagePath());
+                }
+                else 
+                    if (auto aud_q = dynamic_pointer_cast<AudioQuestion>(selected_q)) {
+                        cout << "[>>> Воспроизведение аудио <<<]" << endl;
+                        PlayAudioBackground(aud_q->GetAudioPath());
+                    }
+                
                 cout << "\nВаш ответ >>> ";
                 getline(cin, user_answer);
+
+                StopAudioBackground();
 
                 if (user_answer.empty()) {
                     cout << "\nВопрос пропущен! Правильный ответ: " << selected_q->GetPrimaryAnswer() << endl;
