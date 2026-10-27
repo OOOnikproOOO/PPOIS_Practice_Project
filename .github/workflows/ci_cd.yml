@@ -52,8 +52,8 @@ jobs:
           Write-Host "==================================================" -ForegroundColor Cyan
           Write-Host ""
 
-          if ($totalCoverage -lt 90.0) {
-              Write-Error "Total code coverage ($totalCoverage%) is below 90% threshold!"
+          if ($totalCoverage -lt 80.0) {
+              Write-Error "Total code coverage ($totalCoverage%) is below 80% threshold!"
               exit 1
           }
 

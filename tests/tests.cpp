@@ -37,6 +37,27 @@ TEST(CategoryTest, DifferentIdsAndNames) {
     EXPECT_EQ(c2.GetName(), "Очень длинное название категории вопросов для викторины");
 }
 
+TEST(CategoryTest, AddAndGetQuestions) {
+    std::string cat_name = "Животные";
+    Category cat(5, cat_name);
+    EXPECT_TRUE(cat.GetQuestions().empty());
+
+    std::string q_text = "Хвостатый зверь?";
+    std::string diff = "Легко";
+    std::string ans = "Кот";
+    std::vector<std::string> alts = { "кот", "кошка" };
+
+    auto q1 = std::make_shared<StandardQuestion>(101, 5, 100, q_text, diff, ans, alts);
+    auto q2 = std::make_shared<StandardQuestion>(102, 5, 200, q_text, diff, ans, alts);
+
+    cat.AddQuestion(q1);
+    cat.AddQuestion(q2);
+
+    ASSERT_EQ(cat.GetQuestions().size(), 2);
+    EXPECT_EQ(cat.GetQuestions()[0]->GetId(), 101);
+    EXPECT_EQ(cat.GetQuestions()[1]->GetId(), 102);
+}
+
 TEST(DataManagerTest, AddAndRetrieveMultiple) {
     DataManager<Category> manager;
 
@@ -62,6 +83,16 @@ TEST(DataManagerTest, NonExistingIdThrowsException) {
     EXPECT_THROW(manager.GetById(999), std::exception);
     EXPECT_THROW(manager.GetById(0), std::exception);
     EXPECT_THROW(manager.GetById(-1), std::exception);
+}
+
+TEST(DataManagerTest, ClearCollection) {
+    DataManager<Category> manager;
+    std::string name = "Спорт";
+    manager.Add(std::make_shared<Category>(1, name));
+    EXPECT_EQ(manager.GetAll().size(), 1);
+
+    manager.Clear();
+    EXPECT_TRUE(manager.GetAll().empty());
 }
 
 TEST(StandardQuestionTest, CorrectAndIncorrectAnswers) {
@@ -193,6 +224,21 @@ TEST(GameSessionTest, ComplexScoringSequence) {
     EXPECT_TRUE(session.IsQuestionPlayed(4));
 }
 
+TEST(GameSessionTest, CountersAccuracyAndNegativePoints) {
+    GameSession session;
+    EXPECT_EQ(session.GetCorrectCount(), 0);
+    EXPECT_EQ(session.GetIncorrectCount(), 0);
+
+    session.ProcessResult(100, true, 1);
+    session.ProcessResult(200, false, 2);
+    session.ProcessResult(300, true, 3);
+    session.ProcessResult(0, false, 4);
+    session.ProcessResult(-50, false, 5);
+
+    EXPECT_EQ(session.GetCorrectCount(), 2);
+    EXPECT_EQ(session.GetIncorrectCount(), 1);
+}
+
 TEST(DatabaseTest, FullInitializationAndSeeding) {
     std::string test_db = "test_game_full.db";
     if (fs::exists(test_db)) {
@@ -244,6 +290,70 @@ TEST(DatabaseTest, DoubleInitializationDoesNotCrash) {
     if (fs::exists(test_db)) fs::remove(test_db);
 }
 
+TEST(DatabaseHelperTest, SplitStringTrimmingAndEmpty) {
+    std::string sample = "Москва.|Минск|Киев.";
+    auto result = SplitString(sample, '|');
+    ASSERT_EQ(result.size(), 3);
+    EXPECT_EQ(result[0], "Москва");
+    EXPECT_EQ(result[1], "Минск");
+    EXPECT_EQ(result[2], "Киев");
+
+    auto empty_res = SplitString("", '|');
+    EXPECT_TRUE(empty_res.empty());
+}
+
+TEST(DatabaseTest, InvalidDatabasePathThrows) {
+    EXPECT_THROW({
+        Database bad_db("Z:\\non_existent_drive\\invalid.db");
+        bad_db.Initialize();
+        }, std::runtime_error);
+}
+
+TEST(GameClassTest, FullWorkflow) {
+    Game game;
+    game.SetMode(GameMode::Training);
+    game.SetMode(GameMode::Classic);
+    EXPECT_EQ(game.GetSession().GetScore(), 0);
+
+    std::string c_name = "Космос";
+    auto cat = std::make_shared<Category>(10, c_name);
+
+    std::string q_text = "Первый космонавт?";
+    std::string diff = "Легко";
+    std::string ans = "Гагарин";
+    std::vector<std::string> alts = { "Гагарин", "гагарин", "Юрий Гагарин" };
+
+    auto q = std::make_shared<StandardQuestion>(201, 10, 500, q_text, diff, ans, alts);
+    cat->AddQuestion(q);
+
+    std::vector<std::shared_ptr<Category>> board = { cat };
+    EXPECT_NO_THROW(game.GenerateBoard(board));
+
+    bool correct_res = game.AnswerQuestion(q, "Гагарин");
+    EXPECT_TRUE(correct_res);
+    EXPECT_EQ(game.GetSession().GetScore(), 500);
+    EXPECT_TRUE(game.GetSession().IsQuestionPlayed(201));
+
+    auto q_wrong = std::make_shared<StandardQuestion>(202, 10, 200, q_text, diff, ans, alts);
+    bool wrong_res = game.AnswerQuestion(q_wrong, "Титов");
+    EXPECT_FALSE(wrong_res);
+    EXPECT_EQ(game.GetSession().GetScore(), 300);
+}
+
+TEST(IQuestionBaseTest, BaseCheckAnswerAndGetters) {
+    std::string text = "Базовый вопрос";
+    std::string diff = "Средне";
+    std::string ans = "Базовый ответ";
+
+    IQuestion base_q(999, 7, 400, text, diff, ans);
+    EXPECT_EQ(base_q.GetId(), 999);
+    EXPECT_EQ(base_q.GetCategoryId(), 7);
+    EXPECT_EQ(base_q.GetCost(), 400);
+    EXPECT_EQ(base_q.GetText(), "Базовый вопрос");
+    EXPECT_EQ(base_q.GetPrimaryAnswer(), "Базовый ответ");
+    EXPECT_FALSE(base_q.CheckAnswer("Любой ответ"));
+}
+
 TEST(AssetsWorkTest, PathResolvingVariants) {
     std::string fake = "dummy_folder/no_file.jpg";
     EXPECT_EQ(ResolveMediaPath(fake), fake);
@@ -264,18 +374,6 @@ TEST(AssetsWorkTest, StopAudioWhenNotPlaying) {
     EXPECT_NO_THROW(StopAudioBackground());
 }
 
-TEST(DatabaseHelperTest, SplitStringTrimmingAndEmpty) {
-    std::string sample = "Москва.|Минск|Киев.";
-    auto result = SplitString(sample, '|');
-    ASSERT_EQ(result.size(), 3);
-    EXPECT_EQ(result[0], "Москва");
-    EXPECT_EQ(result[1], "Минск");
-    EXPECT_EQ(result[2], "Киев");
-
-    auto empty_res = SplitString("", '|');
-    EXPECT_TRUE(empty_res.empty());
-}
-
 TEST(AssetsWorkTest, AudioPlaybackTriggers) {
     EXPECT_NO_THROW(PlayAudioBackground("assets/audio/komarovo.mp3"));
     EXPECT_NO_THROW(StopAudioBackground());
@@ -283,40 +381,9 @@ TEST(AssetsWorkTest, AudioPlaybackTriggers) {
     EXPECT_NO_THROW(PlayAudioBackground("invalid_audio_file_path.mp3"));
 }
 
-TEST(DatabaseTest, InvalidDatabasePathThrows) {
-    EXPECT_THROW({
-        Database bad_db("Z:\\non_existent_drive\\invalid.db");
-        bad_db.Initialize();
-        }, std::runtime_error);
-}
+TEST(AssetsWorkTest, ViewerAndResolverEdgeCases) {
+    EXPECT_NO_THROW(OpenImageInViewer("non_existent_folder/absent_image.jpg"));
 
-TEST(GameClassTest, ModeAndSessionIntegration) {
-    Game game;
-    game.SetMode(GameMode::Training);
-    EXPECT_EQ(game.GetSession().GetScore(), 0);
-
-    std::string cat_name = "Тестовая категория";
-    auto cat = std::make_shared<Category>(100, cat_name);
-
-    std::string q_text = "Вопрос?";
-    std::string diff = "Легко";
-    std::string ans = "Ответ";
-    std::vector<std::string> alts = { "Ответ", "ответ" };
-    auto q = std::make_shared<StandardQuestion>(501, 100, 300, q_text, diff, ans, alts);
-
-    cat->AddQuestion(q);
-    EXPECT_EQ(cat->GetQuestions().size(), 1);
-
-    std::vector<std::shared_ptr<Category>> cats = { cat };
-    EXPECT_NO_THROW(game.GenerateBoard(cats));
-
-    bool is_ok = game.AnswerQuestion(q, "ответ");
-    EXPECT_TRUE(is_ok);
-    EXPECT_EQ(game.GetSession().GetScore(), 300);
-    EXPECT_TRUE(game.GetSession().IsQuestionPlayed(501));
-
-    auto q2 = std::make_shared<StandardQuestion>(502, 100, 200, q_text, diff, ans, alts);
-    bool is_wrong = game.AnswerQuestion(q2, "неправильно");
-    EXPECT_FALSE(is_wrong);
-    EXPECT_EQ(game.GetSession().GetScore(), 100);
+    std::string non_existent = "random_unreal_path/file.png";
+    EXPECT_EQ(ResolveMediaPath(non_existent), non_existent);
 }
