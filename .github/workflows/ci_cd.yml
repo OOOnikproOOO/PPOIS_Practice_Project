@@ -2,7 +2,7 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ "master", "main", "feature-core_logic" ]
+    branches: [ "master", "main", "feature-core_logic", "feature-with_training_mode" ]
     tags: [ "v*" ]
   pull_request:
     branches: [ "master", "main" ]
