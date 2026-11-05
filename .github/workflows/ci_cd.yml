@@ -2,10 +2,10 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ "master", "main", "feature-core_logic", "feature-with_training_mode" ]
+    branches: [ "main", "feature-core_logic", "feature-with_training_mode" ]
     tags: [ "v*" ]
   pull_request:
-    branches: [ "master", "main" ]
+    branches: [ "main" ]
 
 permissions:
   contents: write
@@ -85,19 +85,18 @@ jobs:
           mkdir dist
           Copy-Item "build/Release/OwnGame.exe" -Destination "dist/"
           Copy-Item "assets" -Destination "dist/assets" -Recurse
+          attrib +h "dist\assets" /D
           Compress-Archive -Path "dist/*" -DestinationPath "OwnGame-Windows-x64.zip" -Force
 
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           files: OwnGame-Windows-x64.zip
-          name: "OwnGame v0.1.0 — First Playable Prototype"
+          name: "OwnGame v0.2.0 — Second Playable Prototype"
           body: |
-            Автоматический релиз первого игрового прототипа "Своя игра" (OwnGame v0.1.0):
-            - Ядро логики игры и сессии (GameSession, DataManager)
-            - Поддержка мультимедиа-вопросов (AudioQuestion, ImageQuestion)
-            - Локальная база вопросов на SQLite с 28 темами
-            - Набор модульных тестов с покрытием >90%
+            Автоматический релиз второго игрового прототипа "Своя игра" (OwnGame v0.2.0):
+            - Появился режим "Тренировка"
+            - Пополнена локальная база вопросов с 66 темами
             В архиве: исполняемый файл `OwnGame.exe` и папка с ресурсами `assets/`.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

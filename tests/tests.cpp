@@ -393,10 +393,6 @@ TEST(AssetsWorkTest, ViewerAndResolverEdgeCases) {
     EXPECT_EQ(ResolveMediaPath(non_existent), non_existent);
 }
 
-// ============================================================
-// Training mode: statistics, training session, recommendations
-// ============================================================
-
 namespace {
 
 std::shared_ptr<IQuestion> MakeQuestion(int id, int cat_id, int cost, const std::string& answer) {
@@ -407,7 +403,6 @@ std::shared_ptr<IQuestion> MakeQuestion(int id, int cat_id, int cost, const std:
     return std::make_shared<StandardQuestion>(id, cat_id, cost, text, diff, ans, alts);
 }
 
-// Pool of questions: categories 1..cat_count, costs 100..500, answer is "ответ<id>"
 std::vector<std::shared_ptr<IQuestion>> MakePool(int cat_count) {
     std::vector<std::shared_ptr<IQuestion>> pool;
     int id = 1;
@@ -559,7 +554,6 @@ TEST(TrainingSessionTest, GenerateRespectsSettingsAndBalancesTopics) {
         ids.push_back(q->GetId());
         session.SubmitAnswer("");
     }
-    // Every topic gets an equal share and no question is repeated
     EXPECT_EQ(per_category[1], 2);
     EXPECT_EQ(per_category[2], 2);
     EXPECT_EQ(per_category[3], 2);
@@ -594,10 +588,10 @@ TEST(TrainingSessionTest, AnswersHistoryAndStatistics) {
     EXPECT_FALSE(session.IsFinished());
     EXPECT_EQ(session.GetCurrentNumber(), 1);
 
-    EXPECT_TRUE(session.SubmitAnswer("  Гагарин \t"));   // Spaces are trimmed
+    EXPECT_TRUE(session.SubmitAnswer("  Гагарин \t"));
     EXPECT_EQ(session.GetCurrentNumber(), 2);
     EXPECT_FALSE(session.SubmitAnswer("Леонов"));
-    EXPECT_FALSE(session.SubmitAnswer(""));              // Skipped question is a mistake
+    EXPECT_FALSE(session.SubmitAnswer(""));
 
     EXPECT_TRUE(session.IsFinished());
     EXPECT_THROW(session.GetCurrentQuestion(), std::out_of_range);
@@ -646,19 +640,16 @@ TEST(TrainingSessionTest, RepeatMistakesBuildsMiniTraining) {
     EXPECT_FALSE(review.SubmitAnswer("д"));
     EXPECT_TRUE(review.IsFinished());
 
-    // The second review contains only the question that is still wrong
     TrainingSession second_review = review.CreateMistakesReview();
     ASSERT_EQ(second_review.GetQuestionCount(), 1);
     EXPECT_EQ(second_review.GetCurrentQuestion()->GetId(), 4);
     EXPECT_TRUE(second_review.SubmitAnswer("г"));
     EXPECT_TRUE(second_review.GetMistakes().empty());
 
-    // Original session is not changed by the reviews
     EXPECT_EQ(session.GetMistakes().size(), 2);
 }
 
 TEST(RecommendationTest, ExampleFromTaskDescription) {
-    // История 4 из 5, Кино 2 из 5, Наука 3 из 5
     Statistics stats;
     stats.AddResult(1, 100, true);
     stats.AddResult(1, 200, true);
@@ -696,10 +687,10 @@ TEST(RecommendationTest, ExampleFromTaskDescription) {
 TEST(RecommendationTest, SeveralWeakSpotsSortedFromWeakest) {
     Statistics stats;
     stats.AddResult(1, 100, true);
-    stats.AddResult(1, 300, false);   // История: 50%
+    stats.AddResult(1, 300, false);
     stats.AddResult(2, 300, false);
-    stats.AddResult(2, 500, false);   // Кино: 0%
-    stats.AddResult(3, 100, true);    // Наука: 100%
+    stats.AddResult(2, 500, false);
+    stats.AddResult(3, 100, true);
 
     RecommendationSystem recommender;
     Recommendation rec = recommender.Analyze(stats);
@@ -736,7 +727,7 @@ TEST(RecommendationTest, NoWeakSpotsAndCustomThreshold) {
     stats.AddResult(1, 100, true);
     stats.AddResult(1, 400, true);
     stats.AddResult(2, 300, true);
-    stats.AddResult(2, 500, false);   // Кино: 50%
+    stats.AddResult(2, 500, false);
 
     RecommendationSystem lenient(50);
     Recommendation rec = lenient.Analyze(stats);

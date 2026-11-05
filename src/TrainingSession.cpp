@@ -66,7 +66,6 @@ void TrainingSession::Generate(const std::vector<std::shared_ptr<IQuestion>>& al
     std::random_device rd;
     std::mt19937 g(rd());
 
-    // Grouping by categories so that every chosen topic gets an equal share of questions
     std::map<int, std::vector<std::shared_ptr<IQuestion>>> by_category;
     for (const auto& q : suitable)
         by_category[q->GetCategoryId()].push_back(q);
@@ -81,7 +80,6 @@ void TrainingSession::Generate(const std::vector<std::shared_ptr<IQuestion>>& al
     std::size_t need = std::min(static_cast<std::size_t>(settings.question_count), suitable.size());
     std::vector<std::shared_ptr<IQuestion>> selected;
 
-    // Round-robin: one question from each category per round
     for (std::size_t round = 0; selected.size() < need; round++) {
         for (const auto& group : groups) {
             if (round < group.size() && selected.size() < need)
@@ -104,7 +102,7 @@ bool TrainingSession::IsFinished() const {
 
 std::shared_ptr<IQuestion> TrainingSession::GetCurrentQuestion() const {
     if (IsFinished())
-        throw std::out_of_range("Тренировка завершена: вопросов больше нет.");
+        throw std::out_of_range("Тренировка завершена.");
     return questions[current_index];
 }
 

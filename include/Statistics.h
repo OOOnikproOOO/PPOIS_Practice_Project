@@ -1,7 +1,7 @@
 #ifndef STATISTICS_H
 #define STATISTICS_H
 
-#include <map>
+#include <map> // For storing data as key-value pairs
 #include <string>
 
 // Difficulty groups by question cost: 100-200, 300, 400-500
@@ -15,12 +15,9 @@ std::string GetCostBandLabel(CostBand band);
 struct StatEntry {
     int correct = 0;
     int total = 0;
-
-    // Rounded success rate in percent (0 if there were no questions)
     int GetPercent() const;
 };
 
-// Training results grouped by categories and difficulty
 class Statistics {
 public:
     void AddResult(int category_id, int cost, bool is_correct);

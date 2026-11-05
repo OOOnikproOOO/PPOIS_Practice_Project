@@ -1,6 +1,5 @@
 #include <string>
 #include <vector>
-#include <algorithm> // To use STL algorithms
 #include "StandardQuestion.h"
 
 StandardQuestion::StandardQuestion(int i, int cat_id, int c, std::string& t, std::string& diff, std::string& p_answer, std::vector<std::string>& alts) :

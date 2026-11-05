@@ -6,7 +6,6 @@
 
 namespace {
 
-// Joins words as "A", "A и B", "A, B и C"
 std::string JoinWithAnd(const std::vector<std::string>& parts) {
     std::string result;
     for (std::size_t i = 0; i < parts.size(); i++) {
@@ -43,7 +42,6 @@ Recommendation RecommendationSystem::Analyze(const Statistics& stats) const {
         if (item.second.total > 0 && item.second.GetPercent() < threshold)
             result.weak_category_ids.push_back(item.first);
     }
-    // The weakest topics go first
     std::stable_sort(result.weak_category_ids.begin(), result.weak_category_ids.end(), [&cat_stats](int a, int b) {
             return cat_stats.at(a).GetPercent() < cat_stats.at(b).GetPercent();
         });
@@ -86,7 +84,6 @@ std::string RecommendationSystem::BuildText(const Recommendation& recommendation
         if (bands_part.empty())
             advice = topics_part;
         else {
-            // "тему «Кино» и вопросы ..." but "темы «Кино» и «Наука», а также вопросы ..." to avoid a double "и"
             std::string connector = (recommendation.weak_category_ids.size() == 1) ? " и " : ", а также ";
             advice = topics_part + connector + bands_part;
         }

@@ -22,11 +22,6 @@
 
 using namespace std;
 
-// ============================================================
-// Common helpers
-// ============================================================
-
-// Reads a whole line and returns a number from [min_value, max_value]; asks again on invalid input
 int ReadNumber(const string& prompt, int min_value, int max_value) {
     string line;
     while (true) {
@@ -42,13 +37,11 @@ int ReadNumber(const string& prompt, int min_value, int max_value) {
                 return value;
         }
         catch (const exception&) {
-            // Not a number: fall through to the error message
         }
         cout << "Введите целое число от " << min_value << " до " << max_value << "." << endl;
     }
 }
 
-// Shows the question text and opens the attached media, if any
 void PresentQuestion(const shared_ptr<IQuestion>& question) {
     cout << question->GetText() << endl;
 
@@ -106,7 +99,7 @@ void RunClassicGame(const DataManager<Category>& cat_manager, const DataManager<
         auto categories = cat_manager.GetAll();
         auto all_questions = q_manager.GetAll();
 
-        int max_cat_id = 0; // Upper bound for the input: the largest category ID
+        int max_cat_id = 0;
         for (const auto& cat : categories) {
             if (cat->GetId() > max_cat_id)
                 max_cat_id = cat->GetId();
@@ -174,7 +167,7 @@ void RunClassicGame(const DataManager<Category>& cat_manager, const DataManager<
             StopAudioBackground();
 
             if (user_answer.empty()) {
-                cout << "\nВопрос пропущен! Правильный ответ: " << selected_q->GetPrimaryAnswer() << endl;
+                cout << "\n⏭ Вопрос пропущен! Правильный ответ: " << selected_q->GetPrimaryAnswer() << endl;
                 session.ProcessResult(0, false, selected_q->GetId());
             }
             else {
@@ -198,7 +191,6 @@ void RunClassicGame(const DataManager<Category>& cat_manager, const DataManager<
 // Training mode
 // ============================================================
 
-// Asks for the list of topics; an empty result means "all topics"
 vector<int> ReadTrainingCategories(const DataManager<Category>& cat_manager, const DataManager<IQuestion>& q_manager) {
     cout << "\nДоступные темы:" << endl;
     for (const auto& cat : cat_manager.GetAll()) {
@@ -212,7 +204,7 @@ vector<int> ReadTrainingCategories(const DataManager<Category>& cat_manager, con
 
     string line;
     while (true) {
-        cout << "\nВведите ID тем через пробел (0 — все темы, смешанная тренировка) >>> ";
+        cout << "\nВведите ID тем (0 — смешанная тренировка по всем темам) >>> ";
         if (!getline(cin, line))
             throw runtime_error("Ввод прерван.");
 
@@ -259,7 +251,6 @@ int ReadCost(const string& prompt, int min_value, int max_value) {
     }
 }
 
-// Draws a bar like [███████░░░] for a percentage
 string ProgressBar(int percent) {
     const int width = 10;
     int filled = (percent * width + 50) / 100;
@@ -274,7 +265,6 @@ void PrintStatLine(const string& title, const StatEntry& entry) {
         << entry.correct << " из " << entry.total << ", " << entry.GetPercent() << "%" << endl;
 }
 
-// Asks all questions of the session one by one
 void PlayTraining(TrainingSession& session, const DataManager<Category>& cat_manager) {
     string user_answer;
 
@@ -339,7 +329,7 @@ void PrintTrainingResults(const TrainingSession& session, const DataManager<Cate
 
 void RunTraining(const DataManager<Category>& cat_manager, const DataManager<IQuestion>& q_manager) {
     cout << "\n=======================================" << endl;
-    cout << " РЕЖИМ ТРЕНИРОВКИ" << endl;
+    cout << " РЕЖИМ \"ТРЕНИРОВКА\"" << endl;
     cout << "=======================================" << endl;
 
     TrainingSettings settings;
@@ -353,7 +343,6 @@ void RunTraining(const DataManager<Category>& cat_manager, const DataManager<IQu
         return;
     }
     if (available == 1) {
-        // Nothing to choose: start right away
         cout << "Под выбранные параметры подходит только 1 вопрос — начинаем!" << endl;
         settings.question_count = 1;
     }
@@ -367,7 +356,7 @@ void RunTraining(const DataManager<Category>& cat_manager, const DataManager<IQu
     PlayTraining(session, cat_manager);
     PrintTrainingResults(session, cat_manager, recommender, "ИТОГИ ТРЕНИРОВКИ", true);
 
-    // "Repeat mistakes": mini-trainings built only from wrong answers, until there are none left
+    // "Repeat mistakes"
     while (true) {
         int mistakes = static_cast<int>(session.GetMistakes().size());
         if (mistakes == 0) {
@@ -375,7 +364,7 @@ void RunTraining(const DataManager<Category>& cat_manager, const DataManager<IQu
             return;
         }
 
-        cout << "\n1. Повторить ошибки (" << mistakes << " вопр.)" << endl;
+        cout << "\n1. Повторить ошибки (" << mistakes << " вопросов)" << endl;
         cout << "0. Вернуться в главное меню" << endl;
         if (ReadNumber("\nВаш выбор >>> ", 0, 1) == 0)
             return;
@@ -386,10 +375,7 @@ void RunTraining(const DataManager<Category>& cat_manager, const DataManager<IQu
     }
 }
 
-// ============================================================
 // Entry point
-// ============================================================
-
 int main() {
 #if defined(_WIN32)
     SetConsoleOutputCP(CP_UTF8);
@@ -410,8 +396,8 @@ int main() {
             cout << "\n=======================================" << endl;
             cout << " СВОЯ ИГРА — ГЛАВНОЕ МЕНЮ" << endl;
             cout << "=======================================" << endl;
-            cout << "1. Классическая игра" << endl;
-            cout << "2. Режим тренировки" << endl;
+            cout << "1. Режим \"Классическая игра\"" << endl;
+            cout << "2. Режим \"Тренировка\"" << endl;
             cout << "0. Выход" << endl;
 
             int choice = ReadNumber("\nВаш выбор >>> ", 0, 2);

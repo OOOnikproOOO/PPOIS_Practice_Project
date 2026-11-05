@@ -555,5 +555,727 @@ inline const char* GetDatabaseInitSql() {
         
         INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
         VALUES (28, 500, 'Таких неопытных людей с низкими навыками называют раками.', 'Сложно', 'Нубы', 'Нубы|нубы|Нуб|нуб|Noob|noob|Нубики|нубики');
+
+        -- ==========================================
+        -- Тема 29: Поэты о птицах
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (29, 'Поэты о птицах');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (29, 100, 'СветлОв назвал ЕГО «оратором деревень».', 'Легко', 'Петух', 'Петух|петух');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (29, 200, 'ЛуговскОй писал, что ОНИ — «Черные гадалки, // Длинные хвосты, // Трефовые кресты».', 'Легко', 'Галки', 'Галки|галки');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (29, 300, '«Это щёголь в птичьем свете, // в красном бархатном берете, // в тонком черном пиджаке, // с червяком в одной руке», — писал о НЕМ Борис КорнИлов.', 'Средне', 'Дятел', 'Дятел|дятел');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (29, 400, '«Пинь-пинь-пинь», — тарарахнул ИМЕННО ОН у ХлЕбникова.', 'Сложно', 'Зинзивер (большая синица)', 'Зинзивер|зинзивер|Большая синица|большая синица|Синица|синица');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (29, 500, 'ВознесЕнский сравнил ИХ с треугольными пловчихами.', 'Сложно', 'Ласточки', 'Ласточки|ласточки|Ласточка|ласточка');
+
+        -- ==========================================
+        -- Тема 30: Эвфемизмы
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (30, 'Эвфемизмы');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (30, 100, 'Согласно постановлению Главного государственного санитарного врача ЕГО теперь принято называть «помещение, оборудованное унитазом».', 'Легко', 'Туалет', 'Туалет|туалет|Уборная|уборная|Санузел|санузел');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (30, 200, 'Благодаря Евгению ДОдолеву ЭТО СЛОВОСОЧЕТАНИЕ означает не только мешочниц, медведиц или стеклянниц, но и людей.', 'Легко', 'Ночные бабочки', 'Ночные бабочки|ночные бабочки|Ночная бабочка|ночная бабочка|Бабочки ночные|бабочки ночные');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (30, 300, 'ЭТОТ ЭВФЕМИЗМ для обозначения галлюцинаций впервые зафиксирован в автобиографической повести Джека Лондона «Джон Ячменное Зерно».', 'Средне', 'Розовый слон', 'Розовый слон|розовый слон|Розовые слоны|розовые слоны');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (30, 400, 'Согласно одной из версий, ЭТОТ ЭВФЕМИЗМ восходит к БаЮну, любимцу Бабы Яги.', 'Сложно', 'Ёшкин кот', 'Ёшкин кот|ёшкин кот|Ешкин кот|ешкин кот');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (30, 500, 'Чтобы качественно СДЕЛАТЬ ЭТО, на тематических форумах предлагают «Р-88», «Наирит» или «Радикал».', 'Сложно', 'Склеить ласты', 'Склеить ласты|склеить ласты');
+
+        -- ==========================================
+        -- Тема 31: Вечная
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (31, 'Вечная');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (31, 100, 'Как известно, Французская Академия Наук не занимается изобретением ЭТОГО.', 'Легко', 'Вечного двигателя', 'Вечного двигателя|вечного двигателя|Вечный двигатель|вечный двигатель|Двигателя вечного|двигателя вечного');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (31, 200, '«Он как душа — неразделим и вечен», — писал Пушкин об ЭТОМ союзе.', 'Легко', 'Союз друзей', 'Союз друзей|союз друзей|Дружеский союз|дружеский союз|союзе друзей|Союзе друзей');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (31, 300, 'Многолетняя криолитозОна называется ещё и ТАК.', 'Средне', 'Вечная мерзлота', 'Вечная мерзлота|вечная мерзлота|Мерзлота|мерзлота|Мерзлота вечная|мерзлота вечная');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (31, 400, 'По словам О. Бендера, Вечный Жид «бывал везде: и на Рейне, и на Ганге, и на Миссисипи, и на Ян-Цзы, и на НИгере, и на Волге. И не был он только ТАМ». Путешествие ТУДА оказалось роковым.', 'Сложно', 'На Днепр', 'На Днепр|на Днепр|на днепр|Днепр|днепр|На Днепре|на Днепре|на днепре');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (31, 500, 'К НИМ относятся и Дон Жуан, и Дон Кихот.', 'Сложно', 'Вечные образы', 'Вечные образы|вечные образы|Вечный образ|вечный образ');
+
+        -- ==========================================
+        -- Тема 32: Вопросы
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (32, 'Вопросы');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (32, 100, 'ТАКОЙ вопрос не требует ответа.', 'Легко', 'Риторический', 'Риторический|риторический|Риторический вопрос|риторический вопрос');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (32, 200, 'Именно ЭТОТ вопрос, согласно Булгакову, испортил москвичей.', 'Легко', 'Квартирный', 'Квартирный|квартирный|Квартирный вопрос|квартирный вопрос');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (32, 300, 'По правилам пунктуации ЭТОГО языка, знак вопроса ставится не только в конце, но и в начале вопросительного предложения.', 'Средне', 'Испанский', 'Испанский|испанский|Испанский язык|испанский язык|Испанского|испанского|Испанского языка|испанского языка');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (32, 400, 'ЭТИМ вопросом заканчивается пушкинская «Русалочка».', 'Сложно', '«Откуда ты, прекрасное дитя?»', '«Откуда ты, прекрасное дитя?»|"Откуда ты, прекрасное дитя?"|«откуда ты, прекрасное дитя?»|"откуда ты, прекрасное дитя?"|Откуда ты, прекрасное дитя?|откуда ты, прекрасное дитя?|Откуда ты прекрасное дитя|откуда ты прекрасное дитя');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (32, 500, 'Из ЭТОЙ статьи Ленина мы узнали мудрую мысль о том, что «надо мечтать».', 'Сложно', '«Что делать?»', '«Что делать?»|"Что делать?"|«что делать?»|"что делать?"|Что делать?|что делать?|«Что делать»|"Что делать"|Что делать|что делать');
+
+        -- ==========================================
+        -- Тема 33: Матрица «…ИЗИ…»
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (33, 'Матрица «…ИЗИ…»');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (33, 100, 'Во всём мире его называют кубинским, а у нас...', 'Легко', 'Карибский кризис', 'Карибский кризис|карибский кризис|Карибским кризисом|карибским кризисом|Кризис карибский|кризис карибский');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (33, 200, 'Говорят, однажды он перехитрил смерть.', 'Легко', 'Сизиф', 'Сизиф|сизиф');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (33, 300, 'Так по-испански звучит слово «расследование».', 'Средне', 'Инквизиция', 'Инквизиция|инквизиция');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (33, 400, 'Это не только карточка, но и вид сюртука.', 'Сложно', 'Визитка', 'Визитка|визитка|Визитная карточка|визитная карточка');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (33, 500, 'ЭТОТ термин произошел от английского слова, означающего «аренда».', 'Сложно', 'Лизинг', 'Лизинг|лизинг');
+
+        -- ==========================================
+        -- Тема 34: Архитектура
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (34, 'Архитектура');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (34, 100, 'В Древней Греции ИХ было 7 типов: 1) в Антах, 2) прОстиль, 3) амфипрОстиль, 4) перИптер, 5) дИптер, 6) псевдодИптер, 7) тОлос.', 'Легко', 'Храмы', 'Храмы|храмы|Храм|храм');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (34, 200, 'ТАК в Древней Греции назывался храм всех богов.', 'Легко', 'Пантеон', 'Пантеон|пантеон');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (34, 300, 'ЭТА водонапорная башня известного инженера была построена в Борисове в 1927 году, а подобных сооружений в мире насчитывается всего 11 шт.', 'Средне', 'Шуховская башня', 'Шуховская башня|шуховская башня|Башня Шухова|башня Шухова|башня шухова');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (34, 400, 'Во вьетнамской ранней архитектуре широко использовались 2 вида естественных стройматериалов: первый — устойчивое против гниения железное дерево, а ВТОРОЙ?', 'Сложно', 'Бамбук', 'Бамбук|бамбук');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (34, 500, 'ТАК в Древней Греции называлась площадь, где обсуждались важнейшие городские дела, совершались торговые сделки.', 'Сложно', 'Агора', 'Агора|агора');
+
+        -- ==========================================
+        -- Тема 35: Матрица «…АД…»
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (35, 'Матрица «…АД…»');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (35, 100, 'У славян ЭТО слово означало «согласие», «мир», «стройность», «порядок».', 'Легко', 'Лад', 'Лад|лад');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (35, 200, 'Именно ТАК называется опись земельных участков.', 'Легко', 'Кадастр', 'Кадастр|кадастр');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (35, 300, 'ЭТА латинская приставка имеет значения «к, при, возле» и многие другие.', 'Средне', 'Ad', 'Ad|ad|Ад|ад');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (35, 400, 'Именно ТАК называется ярый приверженец какого-либо учения, идеи.', 'Сложно', 'Адепт', 'Адепт|адепт');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (35, 500, 'ЭТО самый разрушительный вид осадков.', 'Сложно', 'Град', 'Град|град');
+
+        -- ==========================================
+        -- Тема 36: Матрица «…НЕТ…»
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (36, 'Матрица «…НЕТ…»');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (36, 100, 'Инспекторы ГАИ имеют право задержать водителя по подозрению в нахождении именно в ЭТОМ состоянии.', 'Легко', 'Нетрезвом', 'Нетрезвом|нетрезвом|Нетрезвом состоянии|нетрезвом состоянии|Нетрезвый|нетрезвый');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (36, 200, 'ЭТО чистая масса товара, продукта или сырья без учета тары, упаковки, контейнера или поддонов.', 'Легко', 'Нетто', 'Нетто|нетто');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (36, 300, 'Именно ТАКОЙ титул носил британский сэр Генри Баскервиль.', 'Средне', 'Баронет', 'Баронет|баронет');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (36, 400, 'Именно ТАК называется детская обувь для самых маленьких.', 'Сложно', 'Пинетки', 'Пинетки|пинетки|Пинетка|пинетка');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (36, 500, 'ТАК на Руси называли летучую мышь.', 'Сложно', 'Нетопырь', 'Нетопырь|нетопырь');
+
+        -- ==========================================
+        -- Тема 37: Две буквы
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (37, 'Две буквы');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (37, 100, 'Ню, начнём. КАК называется искусство обнажённого тела?', 'Легко', 'Ню', 'Ню|ню');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (37, 200, 'ЕГО нейтральное значение равно 7, от 1 до 6 говорит о кислотности среды, от 8 до 14 — о щёлочности.', 'Легко', 'pH-фактор', 'pH-фактор|pH фактор|ph-фактор|ph фактор|pH|ph|Рш-фактор|рш-фактор');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (37, 300, 'ЭТОТ адрес пока ещё состоит из четырёх октЕтов и необходим каждому, кто пользуется Интернетом.', 'Средне', 'IP-адрес', 'IP-адрес|ip-адрес|IP адрес|ip адрес|IP|ip|Айпи-адрес|айпи-адрес|Айпи|айпи');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (37, 400, 'ЭТИ две буквы располагались в самом верху советской таблицы для проверки зрения.', 'Сложно', 'Ш и Б', 'Ш и Б|ш и б|Ш Б|ш б|Ш, Б|ш, б|ШБ|шб');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (37, 500, 'ЭТО и истребитель, и монета.', 'Сложно', 'Су', 'Су|су');
+
+        -- ==========================================
+        -- Тема 38: Куклы
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (38, 'Куклы');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (38, 100, 'ТАК в средневековье назывались фигурки, изображавшие в кукольных представлениях Деву Марию.', 'Легко', 'Марионетка', 'Марионетка|марионетка|Марионетки|марионетки');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (38, 200, 'ТАК звали рыжеволосую куклу в комбинезоне, в которую вселилась душа серийного убийцы Чарльза Ли Рэя.', 'Легко', 'Чаки', 'Чаки|чаки');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (38, 300, 'ЭТА группа выпустила в 1986 году альбом, название которого переводится как «Кукловод».', 'Средне', 'Металлика', 'Металлика|металлика|Metallica|metallica');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (38, 400, 'ЕЁ прародителем был старичок ДарУму.', 'Сложно', 'Матрёшка', 'Матрёшка|матрёшка|Матрешка|матрешка');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (38, 500, 'Ежегодно в ЭТОЙ азиатской стране 3 марта проводится «Фестиваль кукол».', 'Сложно', 'Япония', 'Япония|япония|Японии|японии|В Японии|в Японии|в японии');
+
+        -- ==========================================
+        -- Тема 39: Пословицы и поговорки
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (39, 'Пословицы и поговорки');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (39, 100, 'Именно ТОГДА, согласно русской пословице, лиса кур считает.', 'Легко', 'Во сне', 'Во сне|во сне|Сон|сон');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (39, 200, 'Именно ЭТО, согласно русской пословице, нельзя нашить на чужой рот.', 'Легко', 'Пуговицу', 'Пуговицу|пуговицу|Пуговица|пуговица');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (39, 300, 'Именно ТОГДА, согласно осетинской пословице, медведь заявил, что мёд горек.', 'Средне', 'Когда наелся', 'Когда наелся|когда наелся|Наелся|наелся');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (39, 400, 'Греческая пословица «пить по-скифски» означала именно ЭТО.', 'Сложно', 'Упиваться до смерти', 'Упиваться до смерти|упиваться до смерти|Пить не разбавляя|пить не разбавляя|Не разбавлять вино водой|не разбавлять вино водой');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (39, 500, 'Именно на ЭТОТ вопрос, согласно турецкой поговорке, осёл отвечает, что его мать лошадь.', 'Сложно', '«Кто твой отец?»', '«Кто твой отец?»|"Кто твой отец?"|«кто твой отец?»|"кто твой отец?"|Кто твой отец?|кто твой отец?|Твой отец кто|твой отец кто');
+
+        -- ==========================================
+        -- Тема 40: Мозги
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (40, 'Мозги');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (40, 100, 'Именно ЭТО было заменителем мозгов у Винни-Пуха.', 'Легко', 'Опилки', 'Опилки|опилки');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (40, 200, 'Название ЭТОЙ игры можно перевести и как «перстневой мозг».', 'Легко', 'Брейн-ринг', 'Брейн-ринг|брейн-ринг|Брейн ринг|брейн ринг');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (40, 300, 'По мнению Игоря Губермана, ЭТО — единственная кость, лишённая какого-либо мозга.', 'Средне', 'Ребро', 'Ребро|ребро');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (40, 400, 'Именно у ЭТОГО примата масса мозга больше массы мозга некоторых людей.', 'Сложно', 'Горилла', 'Горилла|горилла');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (40, 500, 'Основная функция ЭТОГО мозга — информационно-транспортная.', 'Сложно', 'Продолговатый', 'Продолговатый|продолговатый|Продолговатый мозг|продолговатый мозг');
+
+        -- ==========================================
+        -- Тема 41: Пригодится в быту
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (41, 'Пригодится в быту');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (41, 100, 'Некоторые многоразовые ИХ разновидности комплектовались счетчиками по номиналам, другие имели музыкальные замки, третьи открывались только по достижении определенной суммы.', 'Легко', 'Копилки', 'Копилки|копилки|Копилка|копилка');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (41, 200, 'В городе Мейкон женщина отбилась от грабителя с помощью ЭТОГО бытового УСТРОЙСТВА. Он, правда, был выключен, и ожогов не осталось.', 'Легко', 'Утюг', 'Утюг|утюг');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (41, 300, 'В городе Линкольн мужчина ограбил хозяйственный магазин, использовав для маскировки ЕЕ. Сколько метров ЕЕ было использовано, не уточняется.', 'Средне', 'Туалетная бумага', 'Туалетная бумага|туалетная бумага|Рулон туалетной бумаги|рулон туалетной бумаги');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (41, 400, 'Внутри стержня особой ЕГО разновидности находится полый канал с клапаном для отвода двуокиси углерода.', 'Сложно', 'Штопор', 'Штопор|штопор');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (41, 500, 'ЕГО название происходит от немецкого «пробивать насквозь».', 'Сложно', 'Дуршлаг', 'Дуршлаг|дуршлаг|Друшлаг|друшлаг');
+
+        -- ==========================================
+        -- Тема 42: Супергерои
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (42, 'Супергерои');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (42, 100, 'Эрик Брукс — мастерски владеющий мечом охотник на вампиров — известен под ЭТИМ ПРОЗВИЩЕМ.', 'Легко', 'Блейд', 'Блейд|блейд|Blade|blade');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (42, 200, 'ТАК звали персонажа «Людей Икс», который обладает способностью создавать сверхзвуковые волны любой длины.', 'Легко', 'Банши', 'Банши|банши|Баньши|баньши');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (42, 300, 'ЭТОТ невероятно сильный БУГАЙ в мире был доктором Брюсом Баннером.', 'Средне', 'Халк', 'Халк|халк');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (42, 400, 'ЭТИ французские герои, обладающие силой созидания и разрушения, используют для превращения талисманы.', 'Сложно', 'Леди Баг и Супер Кот (Кот Нуар)', 'Леди Баг и Супер Кот|леди баг и супер кот|Леди Баг и Кот Нуар|леди баг и кот нуар|Леди Баг|леди баг');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (42, 500, 'Изначально ЭТОТ ПЕРСОНАЖ был врагом Человека-паука, но впоследствии встал на его сторону. Для боя обычно превращал руки в булавы или молоты, а вот усыплять врагов не умел.', 'Сложно', 'Песочный человек', 'Песочный человек|песочный человек|Сэндмен|сэндмен|Sandman|sandman');
+
+        -- ==========================================
+        -- Тема 43: Ягоды, фрукты, овощи
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (43, 'Ягоды, фрукты, овощи');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (43, 100, 'В своем стихотворении Александр КУшнер называет ИХ «зелеными тиграми».', 'Легко', 'Арбузы', 'Арбузы|арбузы|Арбуз|арбуз');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (43, 200, 'С НЕЙ сравнивается обманчиво красивая жизнь на чужбине, оборачивающаяся горькой неволей.', 'Легко', 'Калина', 'Калина|калина');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (43, 300, 'В Армении на свадьбе принято разбивать ЕГО о стену — чем сильнее рассыплется от удара, тем больше родится детей.', 'Средне', 'Гранат', 'Гранат|гранат');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (43, 400, 'У инков одним из способов оценки времени было соотнесение с затратами на ЕГО варку.', 'Сложно', 'Картофель', 'Картофель|картофель|Картошка|картошка');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (43, 500, 'ЭТО экзотический плод вьющихся кактусов с яркой кожурой и мягкой мякотью, напоминающей по вкусу смесь киви, груши и арбуза.', 'Сложно', 'Питахайя (питайя, драгонфрут)', 'Питахайя|питахайя|Питайя|питайя|Драгонфрут|драгонфрут|Драконий фрукт|драконий фрукт');
+
+        -- ==========================================
+        -- Тема 44: Сумки
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (44, 'Сумки');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (44, 100, 'Во времена дефицита в Советском Союзе люди носили ЕЕ с собой на случай — вдруг удастся что-то купить.', 'Легко', 'Авоська', 'Авоська|авоська');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (44, 200, 'ЕГО название в переводе с французского языка означает «дорожная сумка».', 'Легко', 'Саквояж', 'Саквояж|саквояж');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (44, 300, 'Название ЭТИХ СУМОЧЕК происходит от латинского «сетка». Хотя прозвали их «смехотворными».', 'Средне', 'Ридикюль', 'Ридикюль|ридикюль');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (44, 400, 'На Руси ТАК называли вора, срезающего кошельки с пояса.', 'Сложно', 'Мошенник', 'Мошенник|мошенник|Карманник|карманник');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (44, 500, 'Свое название ЭТОТ ТИП рюкзака получил за свою форму в виде шара.', 'Сложно', 'Колобок', 'Колобок|колобок');
+
+        -- ==========================================
+        -- Тема 45: Языки
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (45, 'Языки');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (45, 100, 'ЭТОТ ЯЗЫК программирования получил свое название в честь английских комиков.', 'Легко', 'Python', 'Python|python|Питон|питон|Пайтон|пайтон');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (45, 200, 'Немка Мария ГАнкель считается первой поэтессой, которая писала на ЭТОМ международном ЯЗЫКЕ как основном. Не беда, что выучила она его только в возрасте 61 года.', 'Легко', 'Эсперанто', 'Эсперанто|эсперанто');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (45, 300, 'Система визуальных знаков, которую часто ошибочно считают просто пантомимой, хотя она имеет свою грамматику и лексику.', 'Средне', 'Язык жестов', 'Язык жестов|язык жестов|Жестовый язык|жестовый язык');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (45, 400, 'На языке цветов именно ТАКАЯ роза символизирует любовь с первого взгляда.', 'Сложно', 'Без шипов', 'Без шипов|без шипов|Роза без шипов|роза без шипов');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (45, 500, 'В 15 лет этот человек, потерявший зрение в детстве, разработал рельефно-точечный метод чтения, который используется незрячими людьми по всему миру до сих пор.', 'Сложно', 'Шрифт (азбука) Брайля', 'Шрифт Брайля|шрифт Брайля|шрифт брайля|Азбука Брайля|азбука Брайля|азбука брайля|Брайль|брайль|Луи Брайль|луи брайль');
+
+        -- ==========================================
+        -- Тема 46: Закон есть закон
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (46, 'Закон есть закон');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (46, 100, 'На тело, погруженное в жидкость (или газ), действует выталкивающая сила, равная весу вытесненной этим телом жидкости.', 'Легко', 'Закон Архимеда', 'Закон Архимеда|закон Архимеда|закон архимеда|Архимеда|архимеда|Архимед|архимед');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (46, 200, 'Сила взаимодействия двух точечных неподвижных заряженных тел в вакууме направлена вдоль прямой, соединяющей заряды, прямо пропорциональна произведению модулей зарядов и обратно пропорциональна квадрату расстояния между ними.', 'Легко', 'Закон Кулона', 'Закон Кулона|закон Кулона|закон кулона|Кулона|кулона|Кулон|кулон');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (46, 300, 'В равных объемах различных газов, взятых при одинаковых температуре и давлении, содержится одно и то же число молекул.', 'Средне', 'Закон Авогадро', 'Закон Авогадро|закон Авогадро|закон авогадро|Авогадро|авогадро');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (46, 400, 'Всё, что может пойти не так, пойдёт не так.', 'Сложно', 'Закон Мёрфи (закон подлости)', 'Закон Мёрфи|закон Мёрфи|закон мёрфи|Закон Мерфи|закон мерфи|Закон подлости|закон подлости|Мёрфи|мёрфи|Мерфи|мерфи');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (46, 500, 'Эмпирический закон, связывающий красное смещение галактик и расстояние до них линейным образом. Установлен экспериментально с помощью телескопа в 1929 году.', 'Сложно', 'Закон Хаббла', 'Закон Хаббла|закон Хаббла|закон хаббла|Хаббла|хаббла|Хаббл|хаббл');
+
+        -- ==========================================
+        -- Тема 47: Нечисть
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (47, 'Нечисть');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (47, 100, 'В русском фольклоре ОНА также именуется купАлкой, лоскотУхой или водянИцей.', 'Легко', 'Русалка', 'Русалка|русалка');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (47, 200, 'В средневековых европейских легендах ОНИ часто похищали принцесс и охраняли золото в пещерах.', 'Легко', 'Драконы', 'Драконы|драконы|Дракон|дракон');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (47, 300, 'В мультсериале «Каспер. Школа страха» главный герой слишком дружелюбный, поэтому не может пугать людей. Кем ОН является по существу?', 'Средне', 'Привидением (призраком)', 'Привидением|привидением|Привидение|привидение|Призраком|призраком|Призрак|призрак|Духом|духом|Дух|дух');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (47, 400, 'Согласно некоторым ученым, в ЭТОМ «ЗАЛЕСЬЕ» была наиболее распространена порфирия.', 'Сложно', 'Трансильвания', 'Трансильвания|трансильвания|В Трансильвании|в Трансильвании|в трансильвании');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (47, 500, 'ТАК называется оборотень-лисица в японской мифологии.', 'Сложно', 'Кицунэ', 'Кицунэ|кицунэ|Кицуне|кицуне');
+
+        -- ==========================================
+        -- Тема 48: Головы
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (48, 'Головы');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (48, 100, 'ЭТО человек, отлавливающий преступников и дезертиров за вознаграждение.', 'Легко', 'Охотник за головами', 'Охотник за головами|охотник за головами|Охотники за головами|охотники за головами|Bounty hunter|bounty hunter');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (48, 200, 'Назовите ЛЮБОЕ из животных, умеющих поворачивать голову на 270 градусов.', 'Легко', 'Сова (филин)', 'Сова|сова|Филин|филин|Совы|совы|Филины|филины');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (48, 300, 'Как звучит второе имя (прозвище) главного героя мультсериала «Кик Бутовский», которого постоянно тянет на безумные трюки?', 'Средне', 'Сорвиголова', 'Сорвиголова|сорвиголова');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (48, 400, 'ТАК называют технику фотографирования с фокусировкой на лице. В шУтерах ОН обычно смертелен.', 'Сложно', 'Head shot (Хедшот)', 'Head shot|head shot|Headshot|headshot|Хедшот|хедшот|Хэдшот|хэдшот');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (48, 500, 'В названии этого приключенческого романа Майн Рида фигурирует призрак, который на деле оказывается трупом Генри Пойндекстера, привязанным к лошади. Назовите этот роман.', 'Сложно', '«Всадник без головы»', '«Всадник без головы»|"Всадник без головы"|«всадник без головы»|"всадник без головы"|Всадник без головы|всадник без головы');
+
+-- =    =========================================
+        -- Тема 49: Матрица «…ЦЕНТ…»
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (49, 'Матрица «…ЦЕНТ…»');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (49, 100, 'ЭТО ближайшая к Солнцу звезда.', 'Легко', 'Проксима Центавра', 'Проксима Центавра|проксима центавра|Центавра|центавра|Проксима|проксима');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (49, 200, 'Обладатель ЭТОЙ степени не обладал большим интеллектом.', 'Легко', 'Доцент', 'Доцент|доцент');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (49, 300, 'Сто катренов у Нострадамуса составляют...', 'Средне', 'Центурию', 'Центурию|центурию|Центурия|центурия');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (49, 400, 'Знак ударения называют ещё и ТАК.', 'Сложно', 'Акцент', 'Акцент|акцент');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (49, 500, 'Вместе с НЕЙ погибла и ее сестра — Лиза.', 'Сложно', 'Старуха-процентщица', 'Старуха-процентщица|старуха-процентщица|Процентщица|процентщица');
+
+        -- ==========================================
+        -- Тема 50: В переводе
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (50, 'В переводе');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (50, 100, 'Судя по названию, с помощью ЭТОГО прибора древние греки хватали с неба звёзды.', 'Легко', 'Астролябия', 'Астролябия|астролябия');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (50, 200, 'Переведите число 100 000 из двоичной системы в шестнадцатеричную.', 'Легко', '20', '20|двадцать|Двадцать');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (50, 300, 'Есть что-то странное в ЭТОМ архитектурном стиле.', 'Средне', 'Барокко', 'Барокко|барокко');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (50, 400, 'Название ЭТОЙ металл-группы означает «могила», в переводе с португальского.', 'Сложно', 'Сепультура', 'Сепультура|сепультура|Sepultura|sepultura');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (50, 500, 'По-латыни «старик» — «senex», а по-арабски...', 'Сложно', 'Шейх', 'Шейх|шейх');
+
+        -- ==========================================
+        -- Тема 51: Ответьте в рифму
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (51, 'Ответьте в рифму');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (51, 100, 'ГДЕ в 1941 году А.Г. Стаханов возглавил шахту №31?', 'Легко', 'В Караганде', 'В Караганде|в Караганде|в караганде|Караганда|караганда');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (51, 200, 'ОТКУДА был сделан заказ на поставку партии шоколада для подрастающего поколения?', 'Легко', 'От верблюда', 'От верблюда|от верблюда|Верблюд|верблюд');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (51, 300, 'КОГДА, согласно гимну КПБ, право владеть землёй получат паразиты?', 'Средне', 'Никогда', 'Никогда|никогда');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (51, 400, 'КТО в 1928 году написал пьесу «Орфей», а в 1950 снял фильм с таким же названием?', 'Сложно', 'Жан Кокто', 'Жан Кокто|жан кокто|Кокто|кокто');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (51, 500, 'ПОЧЕМУ один из альбомов получил ТАКОЕ название можно понять, если вспомнить фамилию автора-исполнителя.', 'Сложно', '«... по Качану!»', 'По Качану|по Качану|по качану|По качану');
+
+        -- ==========================================
+        -- Тема 52: Домино
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (52, 'Домино');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (52, 100, 'Изобретение домино, по одной из версий, приписывается монахам ЭТОГО ордена.', 'Легко', 'Доминиканского', 'Доминиканского|доминиканского|Доминиканский|доминиканский|Доминиканцы|доминиканцы');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (52, 200, 'Именно ЭТО игроки в домино называют азом.', 'Легко', 'Костяшку с одним очком', 'Костяшку с одним очком|костяшку с одним очком|С одним очком|с одним очком|Единица|единица');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (52, 300, 'Именно столько костяшек в домино.', 'Средне', '28', '28|двадцать восемь|Двадцать восемь');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (52, 400, 'Именно с ЭТОЙ планеты была родом фея Блум.', 'Сложно', 'Домино', 'Домино|домино');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (52, 500, 'ТАК называется крупнейшая международная сеть пиццерий, основанная в 1960 году в США.', 'Сложно', 'Domino’s Pizza', 'Domino’s Pizza|domino’s pizza|Dominos Pizza|dominos pizza|Доминос|доминос|Доминос пицца|доминос пицца');
+
+        -- ==========================================
+        -- Тема 53: Матрица «…ВЫЙ…»
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (53, 'Матрица «…ВЫЙ…»');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (53, 100, 'ЭТОТ цвет в радуге — последний.', 'Легко', 'Фиолетовый', 'Фиолетовый|фиолетовый');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (53, 200, 'Название ЭТОГО цвета произошло от апельсина.', 'Легко', 'Оранжевый', 'Оранжевый|оранжевый');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (53, 300, 'ЭТО одно из многих прозвищ дьявола.', 'Средне', 'Лукавый', 'Лукавый|лукавый');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (53, 400, 'ЭТИМ цветом пышно расцветают разные нехорошие явления.', 'Сложно', 'Махровый', 'Махровый|махровый');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (53, 500, 'ТАК называли на Руси ромбической формы нашивку на спинах у каторжан.', 'Сложно', 'Бубновый туз', 'Бубновый туз|бубновый туз|Туз бубей|туз бубей');
+
+        -- ==========================================
+        -- Тема 54: Древняя Греция
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (54, 'Древняя Греция');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (54, 100, 'Именно ТАК в Древней Греции именовался пергамент, сложенный ради удобства пользования вчетверо.', 'Легко', 'Тетрадь', 'Тетрадь|тетрадь');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (54, 200, 'В честь олимпиоников слагали эпиникии, в честь Аполлона — пеаны, а КАК назывались посвящённые Дионису?', 'Легко', 'Дифирамбы', 'Дифирамбы|дифирамбы|Дифирамб|дифирамб');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (54, 300, 'ИХ насчитывалось около 16-ти, однако самой известной была ТА, что лежала между Фессалией и Македонией. Назовите ЕЁ.', 'Средне', 'Олимп', 'Олимп|олимп|Гора Олимп|гора олимп');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (54, 400, 'Если вы знаете, как по-гречески «владыка земли», то назовете ИМЯ старшего сына Кроноса, которого Гомер назвал «синекудрым».', 'Сложно', 'Посейдон', 'Посейдон|посейдон');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (54, 500, 'Именно ТАК звали служанку, которая смогла рассмешить Деметру, а древние греки назвали ЕЁ именем стихи.', 'Сложно', 'Ямб', 'Ямб|ямб');
+
+        -- ==========================================
+        -- Тема 55: Прозвища
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (55, 'Прозвища');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (55, 100, 'ЭТОТ монарх удостоился своего прозвища за Ходынку и Кровавое воскресение.', 'Легко', 'Николай II', 'Николай II|николай 2|Николай 2|Николай Второй|николай второй|Николай Кровавый|николай кровавый');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (55, 200, 'ЭТОГО девятого номера называют «Зубастиком».', 'Легко', 'Роналдо', 'Роналдо|роналдо');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (55, 300, 'ОН обрёл своё прозвище после 15 июля 1240 года.', 'Средне', 'Александр Невский', 'Александр Невский|александр невский|Невский|невский');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (55, 400, 'Именно ЭТО прозвище носил тот, при ком империя Османов достигла наивысшего расцвета в середине 16 века.', 'Сложно', 'Сулейман Великолепный', 'Сулейман Великолепный|сулейман великолепный|Сулейман|сулейман|Великолепный|великолепный');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (55, 500, 'ЭТИМ прозвищем многие белорусы называют президента.', 'Сложно', 'Батька', 'Батька|батька');
+
+        -- ==========================================
+        -- Тема 56: Анатомия
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (56, 'Анатомия');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (56, 100, 'В НЕЙ находятся голосовые связки.', 'Легко', 'Гортань', 'Гортань|гортань');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (56, 200, 'ОН имеет 3 оболочки: твёрдую, мягкую и паутинную.', 'Легко', 'Мозг', 'Мозг|мозг|Головной мозг|головной мозг');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (56, 300, 'ЭТОТ мышечный орган из-за особенности расположения волокон никогда не устаёт.', 'Средне', 'Язык', 'Язык|язык');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (56, 400, 'Сколько позвонков в грудном отделе позвоночника человека?', 'Сложно', '12', '12|двенадцать|Двенадцать');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (56, 500, 'Генетическое заболевание трисомия-21 носит ЕГО имя.', 'Сложно', 'Даун', 'Даун|даун|Синдром Дауна|синдром Дауна|синдром дауна|Джона Лэнгдона Дауна|джона лэнгдона дауна');
+
+        -- ==========================================
+        -- Тема 57: Меры
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (57, 'Меры');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (57, 100, 'Если ОНА короткая, то равна 907 кг, если длинная — 1016 кг.', 'Легко', 'Тонна', 'Тонна|тонна');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (57, 200, 'Основная мера жидкости на Руси, равная 490 литров, называлась именно ТАК.', 'Легко', 'Бочка', 'Бочка|бочка');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (57, 300, 'Четыре вершка составляют одну...', 'Средне', 'Пядь', 'Пядь|пядь');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (57, 400, 'Именно ТАК называется 1/100 дюйма.', 'Сложно', 'Калибр', 'Калибр|калибр');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (57, 500, 'ЭТА русская мера составляет 1/16 ведра.', 'Сложно', 'Винная бутылка', 'Винная бутылка|винная бутылка|Бутылка|бутылка');
+
+        -- ==========================================
+        -- Тема 58: Матрица «…ТРАНС…»
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (58, 'Матрица «…ТРАНС…»');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (58, 100, 'Скажите на латыни «пересаживание».', 'Легко', 'Трансплантация', 'Трансплантация|трансплантация');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (58, 200, 'ОНА передаёт вращение от двигателя к рабочим машинам.', 'Легко', 'Трансмиссия', 'Трансмиссия|трансмиссия');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (58, 300, 'ЭТО приспособление для построения и измерения углов на чертежах известно нам со школьной скамьи.', 'Средне', 'Транспортир', 'Транспортир|транспортир');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (58, 400, 'Замена строк столбцами приводит к получению именно ТАКОЙ матрицы.', 'Сложно', 'Транспонированной', 'Транспонированной|транспонированной|Транспонированная|транспонированная');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (58, 500, 'Именно ТАК расшифровывается аббревиатура ТНК.', 'Сложно', 'Транснациональная корпорация', 'Транснациональная корпорация|транснациональная корпорация');
+
+        -- ==========================================
+        -- Тема 59: Букашки
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (59, 'Букашки');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (59, 100, 'Вопреки распространенному мнению родиной ЭТОГО жука являются северные районы Мексики.', 'Легко', 'Колорадский жук', 'Колорадский жук|колорадский жук|Колорадский|колорадский');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (59, 200, 'Именно ТАК называется дом для лесных пчел.', 'Легко', 'Борть', 'Борть|борть');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (59, 300, 'Именно ЭТО насекомое, согласно русскому фольклору, у нищего в кармане на аркане.', 'Средне', 'Вошь', 'Вошь|вошь|Вши|вши');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (59, 400, 'Именно ЭТОМУ насекомому нужен литр цветочного нектара, чтобы пролететь 150 млн км.', 'Сложно', 'Комару', 'Комару|комару|Комар|комар');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (59, 500, 'В древней Руси именно ЕГО называли изОком.', 'Сложно', 'Сверчка', 'Сверчка|сверчка|Сверчок|сверчок');
+
+        -- ==========================================
+        -- Тема 60: Сколько?
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (60, 'Сколько?');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (60, 100, 'Сколько дней в невисокосном году?', 'Легко', '365', '365|триста шестьдесят пять|Триста шестьдесят пять');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (60, 200, 'Одним из подвигов Геракла было усмирение пса Цербера. Сколько у Цербера было голов?', 'Легко', '3', '3|три|Три');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (60, 300, 'Сколько максимум зубов может быть у человека?', 'Средне', '32', '32|тридцать два|Тридцать два');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (60, 400, 'Сколько строк содержит классический сонет?', 'Сложно', '14', '14|четырнадцать|Четырнадцать');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (60, 500, 'Сколько нулей в числе ГугОл?', 'Сложно', '100', '100|сто|Сто');
+
+        -- ==========================================
+        -- Тема 61: Дары моря
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (61, 'Дары моря');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (61, 100, 'КАКОГО цвета кровь у осьминога?', 'Легко', 'Голубая', 'Голубая|голубая|Голубого|голубого');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (61, 200, 'ЭТА смертельно ядовитая рыба — лакомое блюдо у японцев.', 'Легко', 'Фугу', 'Фугу|фугу|Рыба фугу|рыба фугу');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (61, 300, 'Каждый может услышать «шум моря» через НЕЁ.', 'Средне', 'Ракушка', 'Ракушка|ракушка|Раковина|раковина|Раковину|раковину|Морская раковина|морская раковина');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (61, 400, 'По словам деда Щукаря, в общем котле сварилась не лягушка, а...', 'Сложно', 'Устрица', 'Устрица|устрица');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (61, 500, 'ЭТА одноклеточная водоросль широко используется для очистки воздуха в космических кораблях.', 'Сложно', 'Хлорелла', 'Хлорелла|хлорелла');
+
+        -- ==========================================
+        -- Тема 62: Вертикальная
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (62, 'Вертикальная');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (62, 100, 'Горизонтальная составляющая матрицы — это строка, а вертикальная?', 'Легко', 'Столбец', 'Столбец|столбец|Колонка|колонка');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (62, 200, 'Именно ЭТО свойство вертикальных углов отмечает геометрия.', 'Легко', 'Их равенство', 'Их равенство|их равенство|Равенство|равенство|Они равны|они равны|Равны|равны');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (62, 300, 'В компьютерных редакторах горизонтальная ориентация листа бумаги называется альбомной, а вертикальная?', 'Средне', 'Книжной', 'Книжной|книжной|Книжная|книжная|Портретной|портретной|Портретная|портретная');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (62, 400, 'В декартовой системе координат по горизонтали расположены абсцисса и ордината, а по вертикали…', 'Сложно', 'Аппликата', 'Аппликата|аппликата|Ось аппликат|ось аппликат');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (62, 500, 'Именно ТАК называется большой круг небесной сферы, проходящий через зенит и надир.', 'Сложно', 'Вертикал', 'Вертикал|вертикал');
+
+        -- ==========================================
+        -- Тема 63: Матрица «…ИЛИ…»
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (63, 'Матрица «…ИЛИ…»');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (63, 100, 'ЭТИ люди шли к святым местам.', 'Легко', 'Пилигримы', 'Пилигримы|пилигримы|Пилигрим|пилигрим');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (63, 200, 'ЭТО протянулось почти на 5 тысяч километров вдоль западного побережья Южной Америки.', 'Легко', 'Чили', 'Чили|чили');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (63, 300, 'ЭТО приходит дважды в сутки на побережье всех морей.', 'Средне', 'Прилив', 'Прилив|прилив');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (63, 400, 'ЭТОТ архипелаг, ныне независимое государство, открывшие ЕГО испанцы назвали в честь своего короля.', 'Сложно', 'Филиппины', 'Филиппины|филиппины');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (63, 500, 'ЭТО был первый вид общественного транспорта.', 'Сложно', 'Дилижанс', 'Дилижанс|дилижанс');
+
+        -- ==========================================
+        -- Тема 64: Болезни
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (64, 'Болезни');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (64, 100, 'Именно ТАК называются приступы удушья вследствие сужения просвета бронхов.', 'Легко', 'Астма', 'Астма|астма|Бронхиальная астма|бронхиальная астма');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (64, 200, 'Именно ТАК называется заболевание, вызванное повышенной чувствительностью организма к какому-либо определённому веществу.', 'Легко', 'Аллергия', 'Аллергия|аллергия');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (64, 300, 'Именно ТАК называется наука, изучающая воздействие лекарств на живые организмы.', 'Средне', 'Фармакология', 'Фармакология|фармакология');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (64, 400, 'Именно ТАК называется ограниченное скопление крови при закрытых повреждениях, сопровождающихся кровоизлияниями.', 'Сложно', 'Гематома', 'Гематома|гематома|Синяк|синяк');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (64, 500, 'Именно ТАК по-русски звучит название гиперметропии.', 'Сложно', 'Дальнозоркость', 'Дальнозоркость|дальнозоркость');
+
+        -- ==========================================
+        -- Тема 65: Белая
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (65, 'Белая');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (65, 100, 'Именно ТАК зачастую называют Зимние Олимпийские Игры.', 'Легко', 'Белая Олимпиада', 'Белая Олимпиада|белая олимпиада|Белая олимпиада');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (65, 200, 'В Санкт-Петербурге ЭТО продолжается с 11 июня по 2 июля.', 'Легко', 'Белые ночи', 'Белые ночи|белые ночи');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (65, 300, 'Часто ОН — пятистопный ямб.', 'Средне', 'Белый стих', 'Белый стих|белый стих');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (65, 400, 'Именно СТОЛЬКО белых клавиш на фортепиано.', 'Сложно', '52', '52|пятьдесят два|Пятьдесят два');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (65, 500, 'Именно ТАК называются очень плотные горячие звёзды малых размеров из вырожденного газа.', 'Сложно', 'Белые карлики', 'Белые карлики|белые карлики|Белый карлик|белый карлик');
+
+        -- ==========================================
+        -- Тема 66: Кругом вода
+        -- ==========================================
+        INSERT OR IGNORE INTO categories (id, name) VALUES (66, 'Кругом вода');
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (66, 100, 'Именно ТАК называли человека, бегающего за всеми в догонялках.', 'Легко', 'Вода', 'Вода|вода');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (66, 200, 'ЭТОТ водоём является северной границей Турции.', 'Легко', 'Чёрное море', 'Чёрное море|чёрное море|Черное море|черное море');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (66, 300, 'Именно ТАК в народе называют болезни, связанные с отёчностью.', 'Средне', 'Водянка', 'Водянка|водянка');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (66, 400, 'Именно ЭТА вода в сказках заживляет раны.', 'Сложно', 'Мёртвая', 'Мёртвая|мёртвая|Мертвая|мертвая');
+        
+        INSERT OR IGNORE INTO questions (category_id, cost, text, difficulty, correct_answer, alternatives) 
+        VALUES (66, 500, 'Именно ТАКОЙ воды желают спортсменам-гребцам.', 'Сложно', 'Лёгкой', 'Лёгкой|лёгкой|Легкой|легкой|Лёгкая|лёгкая|Легкая|легкая');
     )";
 }

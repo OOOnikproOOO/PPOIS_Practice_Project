@@ -24,7 +24,6 @@ std::string GetCostBandLabel(CostBand band) {
 int StatEntry::GetPercent() const {
     if (total == 0)
         return 0;
-    // Integer rounding to the nearest whole percent
     return (correct * 100 + total / 2) / total;
 }
 
