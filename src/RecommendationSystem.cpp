@@ -28,7 +28,7 @@ std::string GetCategoryTitle(int category_id, const DataManager<Category>& categ
 }
 
 bool Recommendation::IsEmpty() const {
-    return weak_category_ids.empty() && weak_cost_bands.empty();
+    return weak_category_ids.empty() && weak_difficulties.empty();
 }
 
 RecommendationSystem::RecommendationSystem(int threshold_percent) : threshold(threshold_percent) {
@@ -46,9 +46,9 @@ Recommendation RecommendationSystem::Analyze(const Statistics& stats) const {
             return cat_stats.at(a).GetPercent() < cat_stats.at(b).GetPercent();
         });
 
-    for (const auto& item : stats.GetCostBandStats()) {
+    for (const auto& item : stats.GetDifficultyStats()) {
         if (item.second.total > 0 && item.second.GetPercent() < threshold)
-            result.weak_cost_bands.push_back(item.first);
+            result.weak_difficulties.push_back(item.first);
     }
     return result;
 }
@@ -70,11 +70,11 @@ std::string RecommendationSystem::BuildText(const Recommendation& recommendation
         topics_part = word + JoinWithAnd(names);
     }
 
-    if (!recommendation.weak_cost_bands.empty()) {
+    if (!recommendation.weak_difficulties.empty()) {
         std::vector<std::string> bands;
-        for (CostBand band : recommendation.weak_cost_bands)
-            bands.push_back(GetCostBandLabel(band));
-        bands_part = "вопросы стоимостью " + JoinWithAnd(bands);
+        for (const auto& difficulty : recommendation.weak_difficulties)
+            bands.push_back("«" + difficulty + "»");
+        bands_part = (bands.size() == 1 ? "вопросы уровня " : "вопросы уровней ") + JoinWithAnd(bands);
     }
 
     std::string advice;

@@ -14,6 +14,7 @@ public:
     int GetId() const;
     int GetCategoryId() const;
     int GetCost() const;
+    std::string GetDifficulty() const;
     std::string GetText() const;
     std::string GetPrimaryAnswer() const;
 

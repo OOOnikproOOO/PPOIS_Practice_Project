@@ -19,6 +19,7 @@
 #include "TrainingSession.h"
 #include "Statistics.h"
 #include "RecommendationSystem.h"
+#include "GameLogger.h"
 
 using namespace std;
 
@@ -82,11 +83,25 @@ string GetCategoryName(int category_id, const DataManager<Category>& cat_manager
     }
 }
 
+void LogOrWarn(bool written, const GameLogger& logger) {
+    if (!written)
+        cout << "⚠ Не удалось записать историю игры в файл " << logger.GetFilePath() << endl;
+}
+
+string ReadUserName() {
+    string line;
+    cout << "Введите ваше имя >>> ";
+    if (!getline(cin, line))
+        throw runtime_error("Ввод прерван.");
+    return GameLogger::NormalizeUserName(line);
+}
+
 // ============================================================
 // Classic game
 // ============================================================
 
-void RunClassicGame(const DataManager<Category>& cat_manager, const DataManager<IQuestion>& q_manager) {
+void RunClassicGame(const DataManager<Category>& cat_manager, const DataManager<IQuestion>& q_manager,
+    GameLogger& logger, const string& user_name) {
     GameSession session;
     string user_answer;
 
@@ -122,6 +137,7 @@ void RunClassicGame(const DataManager<Category>& cat_manager, const DataManager<
         if (cat_id == 0) {
             cout << "\nИгра окончена! Итоговый счет: " << session.GetScore() << endl;
             cout << "Возврат в главное меню..." << endl;
+            LogOrWarn(logger.LogClassicGame(user_name, session.GetScore(), session.GetCorrectCount(), session.GetIncorrectCount()), logger);
             break;
         }
 
@@ -242,14 +258,6 @@ vector<int> ReadTrainingCategories(const DataManager<Category>& cat_manager, con
     }
 }
 
-int ReadCost(const string& prompt, int min_value, int max_value) {
-    while (true) {
-        int cost = ReadNumber(prompt, min_value, max_value);
-        if (cost % 100 == 0)
-            return cost;
-        cout << "Стоимость вопроса должна быть кратна 100." << endl;
-    }
-}
 
 string ProgressBar(int percent) {
     const int width = 10;
@@ -260,12 +268,22 @@ string ProgressBar(int percent) {
     return bar + "]";
 }
 
+// Command that ends the training before the last question
+bool IsExitCommand(const string& input) {
+    string command = input;
+    size_t begin = command.find_first_not_of(" \t\r");
+    size_t end = command.find_last_not_of(" \t\r");
+    command = (begin == string::npos) ? "" : command.substr(begin, end - begin + 1);
+    return command == "/выход" || command == "/exit";
+}
+
 void PrintStatLine(const string& title, const StatEntry& entry) {
     cout << "  " << ProgressBar(entry.GetPercent()) << " " << title << " — "
         << entry.correct << " из " << entry.total << ", " << entry.GetPercent() << "%" << endl;
 }
 
-void PlayTraining(TrainingSession& session, const DataManager<Category>& cat_manager) {
+// Returns true if the user left the training before the last question
+bool PlayTraining(TrainingSession& session, const DataManager<Category>& cat_manager) {
     string user_answer;
 
     while (!session.IsFinished()) {
@@ -281,11 +299,17 @@ void PlayTraining(TrainingSession& session, const DataManager<Category>& cat_man
         cout << line << endl;
         PresentQuestion(question);
 
-        cout << "\nВаш ответ (Enter — пропустить) >>> ";
+        cout << "\nВаш ответ (Enter — пропустить, /выход — завершить тренировку) >>> ";
         if (!getline(cin, user_answer))
             user_answer.clear();
 
         StopAudioBackground();
+
+        if (IsExitCommand(user_answer)) {
+            session.Abort();
+            cout << "\nТренировка завершена досрочно." << endl;
+            return true;
+        }
 
         bool is_correct = session.SubmitAnswer(user_answer);
         const auto& record = session.GetHistory().back();
@@ -301,6 +325,7 @@ void PlayTraining(TrainingSession& session, const DataManager<Category>& cat_man
         if (!cin)
             throw runtime_error("Ввод прерван.");
     }
+    return false;
 }
 
 void PrintTrainingResults(const TrainingSession& session, const DataManager<Category>& cat_manager,
@@ -318,8 +343,8 @@ void PrintTrainingResults(const TrainingSession& session, const DataManager<Cate
         PrintStatLine(GetCategoryName(item.first, cat_manager), item.second);
 
     cout << "\nПо сложности:" << endl;
-    for (const auto& item : stats.GetCostBandStats())
-        PrintStatLine(GetCostBandLabel(item.first), item.second);
+    for (const auto& item : stats.GetDifficultyStats())
+        PrintStatLine(item.first, item.second);
 
     if (show_recommendation) {
         Recommendation rec = recommender.Analyze(stats);
@@ -327,15 +352,49 @@ void PrintTrainingResults(const TrainingSession& session, const DataManager<Cate
     }
 }
 
-void RunTraining(const DataManager<Category>& cat_manager, const DataManager<IQuestion>& q_manager) {
+// Asks for a difficulty level taken from the questions themselves; returns "" for "any"
+string ReadTrainingDifficulty(const DataManager<IQuestion>& q_manager) {
+    vector<string> levels;
+    for (const auto& q : q_manager.GetAll()) {
+        if (!q->GetDifficulty().empty() && find(levels.begin(), levels.end(), q->GetDifficulty()) == levels.end())
+            levels.push_back(q->GetDifficulty());
+    }
+    sort(levels.begin(), levels.end());
+
+    cout << "\nУровень сложности вопросов:" << endl;
+    cout << "0. Любой" << endl;
+    for (size_t i = 0; i < levels.size(); i++)
+        cout << i + 1 << ". " << levels[i] << endl;
+
+    int choice = ReadNumber("\nВаш выбор >>> ", 0, static_cast<int>(levels.size()));
+    return choice == 0 ? "" : levels[choice - 1];
+}
+
+// Prints the results and writes them to the history log; does nothing if no question was answered
+void FinishTraining(const TrainingSession& session, bool aborted, const DataManager<Category>& cat_manager,
+    const RecommendationSystem& recommender, const string& title, bool show_recommendation,
+    GameLogger& logger, const string& user_name) {
+    if (session.GetStatistics().IsEmpty()) {
+        cout << "\nНи на один вопрос не было дано ответа — результатов нет." << endl;
+        return;
+    }
+    PrintTrainingResults(session, cat_manager, recommender, aborted ? title + " (ДОСРОЧНО)" : title, show_recommendation);
+    LogOrWarn(logger.LogTraining(user_name, show_recommendation ? "Тренировка" : "Работа над ошибками", session.GetStatistics(), aborted), logger);
+}
+
+void RunTraining(const DataManager<Category>& cat_manager, const DataManager<IQuestion>& q_manager,
+    GameLogger& logger, const string& user_name) {
     cout << "\n=======================================" << endl;
     cout << " РЕЖИМ \"ТРЕНИРОВКА\"" << endl;
     cout << "=======================================" << endl;
+    cout << "1. Начать настройку тренировки" << endl;
+    cout << "0. Вернуться в главное меню" << endl;
+    if (ReadNumber("\nВаш выбор >>> ", 0, 1) == 0)
+        return;
 
     TrainingSettings settings;
     settings.category_ids = ReadTrainingCategories(cat_manager, q_manager);
-    settings.min_cost = ReadCost("\nМинимальная стоимость вопроса (100–500) >>> ", 100, 500);
-    settings.max_cost = ReadCost("Максимальная стоимость вопроса (" + to_string(settings.min_cost) + "–500) >>> ", settings.min_cost, 500);
+    settings.difficulty = ReadTrainingDifficulty(q_manager);
 
     int available = static_cast<int>(FilterQuestions(q_manager.GetAll(), settings).size());
     if (available == 0) {
@@ -353,8 +412,10 @@ void RunTraining(const DataManager<Category>& cat_manager, const DataManager<IQu
     session.Generate(q_manager.GetAll(), settings);
 
     RecommendationSystem recommender;
-    PlayTraining(session, cat_manager);
-    PrintTrainingResults(session, cat_manager, recommender, "ИТОГИ ТРЕНИРОВКИ", true);
+    bool aborted = PlayTraining(session, cat_manager);
+    FinishTraining(session, aborted, cat_manager, recommender, "ИТОГИ ТРЕНИРОВКИ", true, logger, user_name);
+    if (aborted)
+        return;
 
     // "Repeat mistakes"
     while (true) {
@@ -370,8 +431,10 @@ void RunTraining(const DataManager<Category>& cat_manager, const DataManager<IQu
             return;
 
         session = session.CreateMistakesReview();
-        PlayTraining(session, cat_manager);
-        PrintTrainingResults(session, cat_manager, recommender, "ИТОГИ РАБОТЫ НАД ОШИБКАМИ", false);
+        aborted = PlayTraining(session, cat_manager);
+        FinishTraining(session, aborted, cat_manager, recommender, "ИТОГИ РАБОТЫ НАД ОШИБКАМИ", false, logger, user_name);
+        if (aborted)
+            return;
     }
 }
 
@@ -392,6 +455,10 @@ int main() {
         db.LoadCategories(cat_manager);
         db.LoadQuestions(q_manager);
 
+        GameLogger logger;
+        string user_name = ReadUserName();
+        cout << "Привет, " << user_name << "!" << endl;
+
         while (true) {
             cout << "\n=======================================" << endl;
             cout << " СВОЯ ИГРА — ГЛАВНОЕ МЕНЮ" << endl;
@@ -405,9 +472,9 @@ int main() {
             if (choice == 0)
                 break;
             if (choice == 1)
-                RunClassicGame(cat_manager, q_manager);
+                RunClassicGame(cat_manager, q_manager, logger, user_name);
             else
-                RunTraining(cat_manager, q_manager);
+                RunTraining(cat_manager, q_manager, logger, user_name);
         }
     }
     catch (const std::exception& e) {

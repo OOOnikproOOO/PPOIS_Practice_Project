@@ -10,7 +10,7 @@
 // Weak spots of the user found in the training statistics
 struct Recommendation {
     std::vector<int> weak_category_ids;
-    std::vector<CostBand> weak_cost_bands;
+    std::vector<std::string> weak_difficulties;
     bool IsEmpty() const;
 };
 
@@ -20,7 +20,7 @@ public:
 
     Recommendation Analyze(const Statistics& stats) const;
 
-    // Human-readable advice, e.g. "Рекомендуется потренировать тему «Кино» и вопросы стоимостью 400–500 баллов."
+    // Human-readable advice, e.g. "Рекомендуется потренировать тему «Кино» и вопросы уровня «Сложно»."
     std::string BuildText(const Recommendation& recommendation, const DataManager<Category>& categories) const;
 
     int GetThreshold() const;

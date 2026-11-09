@@ -25,6 +25,10 @@ int IQuestion::GetCost() const {
     return cost;
 }
 
+std::string IQuestion::GetDifficulty() const {
+    return difficulty_level;
+}
+
 std::string IQuestion::GetText() const {
     return text;
 }

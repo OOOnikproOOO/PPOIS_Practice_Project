@@ -46,16 +46,14 @@ std::vector<std::shared_ptr<IQuestion>> FilterQuestions(const std::vector<std::s
 
     for (const auto& q : all_questions) {
         bool category_ok = ids.empty() || std::find(ids.begin(), ids.end(), q->GetCategoryId()) != ids.end();
-        bool cost_ok = q->GetCost() >= settings.min_cost && q->GetCost() <= settings.max_cost;
-        if (category_ok && cost_ok)
+        bool difficulty_ok = settings.difficulty.empty() || q->GetDifficulty() == settings.difficulty;
+        if (category_ok && difficulty_ok)
             result.push_back(q);
     }
     return result;
 }
 
 void TrainingSession::Generate(const std::vector<std::shared_ptr<IQuestion>>& all_questions, const TrainingSettings& settings) {
-    if (settings.min_cost > settings.max_cost)
-        throw std::invalid_argument("Минимальная стоимость вопроса больше максимальной.");
     if (settings.question_count <= 0)
         throw std::invalid_argument("Количество вопросов должно быть больше нуля.");
 
@@ -97,7 +95,7 @@ void TrainingSession::LoadQuestions(const std::vector<std::shared_ptr<IQuestion>
 }
 
 bool TrainingSession::IsFinished() const {
-    return current_index >= questions.size();
+    return aborted || current_index >= questions.size();
 }
 
 std::shared_ptr<IQuestion> TrainingSession::GetCurrentQuestion() const {
@@ -121,7 +119,7 @@ bool TrainingSession::SubmitAnswer(const std::string& user_input) {
     bool is_correct = !answer.empty() && question->CheckAnswer(answer);
 
     history.push_back({ question, answer, is_correct });
-    statistics.AddResult(question->GetCategoryId(), question->GetCost(), is_correct);
+    statistics.AddResult(question->GetCategoryId(), question->GetDifficulty(), is_correct);
     current_index++;
 
     return is_correct;
@@ -153,6 +151,15 @@ TrainingSession TrainingSession::CreateMistakesReview() const {
 void TrainingSession::Reset() {
     questions.clear();
     current_index = 0;
+    aborted = false;
     history.clear();
     statistics = Statistics();
+}
+
+void TrainingSession::Abort() {
+    aborted = true;
+}
+
+bool TrainingSession::IsAborted() const {
+    return aborted;
 }

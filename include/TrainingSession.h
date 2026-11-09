@@ -9,8 +9,7 @@
 
 struct TrainingSettings {
     std::vector<int> category_ids; // Empty list means "all categories" (mixed training)
-    int min_cost = 100;
-    int max_cost = 500;
+    std::string difficulty; // Empty string means "any difficulty" (otherwise "Легко", "Сложно")
     int question_count = 10;
 };
 
@@ -23,7 +22,7 @@ struct AnswerRecord {
 
 std::vector<int> ParseIdList(const std::string& line);
 
-// All questions that match the selected categories and cost range
+// All questions that match the selected categories and difficulty
 std::vector<std::shared_ptr<IQuestion>> FilterQuestions(const std::vector<std::shared_ptr<IQuestion>>& all_questions, const TrainingSettings& settings);
 
 class TrainingSession {
@@ -33,6 +32,11 @@ public:
     void LoadQuestions(const std::vector<std::shared_ptr<IQuestion>>& prepared_questions);
 
     bool IsFinished() const;
+
+    // Ends the training early; unanswered questions are not counted in statistics or mistakes
+    void Abort();
+
+    bool IsAborted() const;
 
     std::shared_ptr<IQuestion> GetCurrentQuestion() const;
 
@@ -55,6 +59,7 @@ private:
     void Reset();
     std::vector<std::shared_ptr<IQuestion>> questions;
     std::size_t current_index = 0;
+    bool aborted = false;
     std::vector<AnswerRecord> history;
     Statistics statistics;
 };

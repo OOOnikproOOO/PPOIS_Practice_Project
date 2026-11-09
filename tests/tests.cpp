@@ -18,6 +18,8 @@
 #include "Database.h"
 #include "AssetsWork.h"
 #include "TrainingSession.h"
+#include "GameLogger.h"
+#include "Statistics.h"
 #include "Statistics.h"
 #include "RecommendationSystem.h"
 
@@ -397,7 +399,7 @@ namespace {
 
 std::shared_ptr<IQuestion> MakeQuestion(int id, int cat_id, int cost, const std::string& answer) {
     std::string text = "Вопрос " + std::to_string(id);
-    std::string diff = "Легко";
+    std::string diff = cost <= 200 ? "Легко" : "Сложно";
     std::string ans = answer;
     std::vector<std::string> alts = { answer };
     return std::make_shared<StandardQuestion>(id, cat_id, cost, text, diff, ans, alts);
@@ -428,17 +430,6 @@ DataManager<Category> MakeCategories() {
 
 }
 
-TEST(StatisticsTest, CostBandBoundaries) {
-    EXPECT_EQ(GetCostBand(100), CostBand::Easy);
-    EXPECT_EQ(GetCostBand(200), CostBand::Easy);
-    EXPECT_EQ(GetCostBand(300), CostBand::Medium);
-    EXPECT_EQ(GetCostBand(400), CostBand::Hard);
-    EXPECT_EQ(GetCostBand(500), CostBand::Hard);
-
-    EXPECT_EQ(GetCostBandLabel(CostBand::Easy), "100–200 баллов");
-    EXPECT_EQ(GetCostBandLabel(CostBand::Medium), "300 баллов");
-    EXPECT_EQ(GetCostBandLabel(CostBand::Hard), "400–500 баллов");
-}
 
 TEST(StatisticsTest, PercentRounding) {
     StatEntry empty;
@@ -457,15 +448,15 @@ TEST(StatisticsTest, PercentRounding) {
     EXPECT_EQ(e4.GetPercent(), 100);
 }
 
-TEST(StatisticsTest, AggregatesByCategoryAndBand) {
+TEST(StatisticsTest, AggregatesByCategoryAndDifficulty) {
     Statistics stats;
     EXPECT_TRUE(stats.IsEmpty());
 
-    stats.AddResult(1, 100, true);
-    stats.AddResult(1, 200, false);
-    stats.AddResult(2, 300, true);
-    stats.AddResult(2, 500, false);
-    stats.AddResult(2, 400, true);
+    stats.AddResult(1, "Легко", true);
+    stats.AddResult(1, "Легко", false);
+    stats.AddResult(2, "Сложно", true);
+    stats.AddResult(2, "Сложно", false);
+    stats.AddResult(2, "Сложно", true);
 
     EXPECT_FALSE(stats.IsEmpty());
     EXPECT_EQ(stats.GetTotal().total, 5);
@@ -478,13 +469,12 @@ TEST(StatisticsTest, AggregatesByCategoryAndBand) {
     EXPECT_EQ(cats.at(2).correct, 2);
     EXPECT_EQ(cats.at(2).total, 3);
 
-    const auto& bands = stats.GetCostBandStats();
-    ASSERT_EQ(bands.size(), 3);
-    EXPECT_EQ(bands.at(CostBand::Easy).total, 2);
-    EXPECT_EQ(bands.at(CostBand::Easy).correct, 1);
-    EXPECT_EQ(bands.at(CostBand::Medium).correct, 1);
-    EXPECT_EQ(bands.at(CostBand::Hard).total, 2);
-    EXPECT_EQ(bands.at(CostBand::Hard).GetPercent(), 50);
+    const auto& levels = stats.GetDifficultyStats();
+    ASSERT_EQ(levels.size(), 2);
+    EXPECT_EQ(levels.at("Легко").total, 2);
+    EXPECT_EQ(levels.at("Легко").correct, 1);
+    EXPECT_EQ(levels.at("Сложно").total, 3);
+    EXPECT_EQ(levels.at("Сложно").GetPercent(), 67);
 }
 
 TEST(TrainingHelpersTest, ParseIdList) {
@@ -496,7 +486,7 @@ TEST(TrainingHelpersTest, ParseIdList) {
     EXPECT_TRUE(ParseIdList("12345678901234").empty());
 }
 
-TEST(TrainingHelpersTest, FilterByCategoriesAndCost) {
+TEST(TrainingHelpersTest, FilterByCategoriesAndDifficulty) {
     auto pool = MakePool(3);
 
     TrainingSettings all;
@@ -504,14 +494,12 @@ TEST(TrainingHelpersTest, FilterByCategoriesAndCost) {
 
     TrainingSettings settings;
     settings.category_ids = { 1, 3 };
-    settings.min_cost = 200;
-    settings.max_cost = 400;
+    settings.difficulty = "Сложно";
     auto filtered = FilterQuestions(pool, settings);
     ASSERT_EQ(filtered.size(), 6);
     for (const auto& q : filtered) {
         EXPECT_NE(q->GetCategoryId(), 2);
-        EXPECT_GE(q->GetCost(), 200);
-        EXPECT_LE(q->GetCost(), 400);
+        EXPECT_EQ(q->GetDifficulty(), "Сложно");
     }
 }
 
@@ -519,10 +507,9 @@ TEST(TrainingSessionTest, GenerateValidatesSettings) {
     auto pool = MakePool(2);
     TrainingSession session;
 
-    TrainingSettings bad_range;
-    bad_range.min_cost = 500;
-    bad_range.max_cost = 100;
-    EXPECT_THROW(session.Generate(pool, bad_range), std::invalid_argument);
+    TrainingSettings nonexistent_difficulty;
+    nonexistent_difficulty.difficulty = "Невозможно";
+    EXPECT_THROW(session.Generate(pool, nonexistent_difficulty), std::runtime_error);
 
     TrainingSettings bad_count;
     bad_count.question_count = 0;
@@ -538,8 +525,6 @@ TEST(TrainingSessionTest, GenerateRespectsSettingsAndBalancesTopics) {
 
     TrainingSettings settings;
     settings.category_ids = { 1, 2, 3 };
-    settings.min_cost = 100;
-    settings.max_cost = 500;
     settings.question_count = 6;
 
     TrainingSession session;
@@ -566,13 +551,12 @@ TEST(TrainingSessionTest, CountIsLimitedByAvailableQuestions) {
 
     TrainingSettings settings;
     settings.category_ids = { 2 };
-    settings.min_cost = 400;
-    settings.max_cost = 500;
+    settings.difficulty = "Сложно";
     settings.question_count = 50;
 
     TrainingSession session;
     session.Generate(pool, settings);
-    EXPECT_EQ(session.GetQuestionCount(), 2);
+    EXPECT_EQ(session.GetQuestionCount(), 3);
 }
 
 TEST(TrainingSessionTest, AnswersHistoryAndStatistics) {
@@ -651,21 +635,21 @@ TEST(TrainingSessionTest, RepeatMistakesBuildsMiniTraining) {
 
 TEST(RecommendationTest, ExampleFromTaskDescription) {
     Statistics stats;
-    stats.AddResult(1, 100, true);
-    stats.AddResult(1, 200, true);
-    stats.AddResult(1, 300, true);
-    stats.AddResult(1, 400, true);
-    stats.AddResult(1, 500, false);
-    stats.AddResult(2, 100, true);
-    stats.AddResult(2, 200, true);
-    stats.AddResult(2, 300, false);
-    stats.AddResult(2, 400, false);
-    stats.AddResult(2, 500, false);
-    stats.AddResult(3, 100, true);
-    stats.AddResult(3, 200, true);
-    stats.AddResult(3, 300, true);
-    stats.AddResult(3, 400, false);
-    stats.AddResult(3, 500, false);
+    stats.AddResult(1, "Легко", true);
+    stats.AddResult(1, "Легко", true);
+    stats.AddResult(1, "Сложно", true);
+    stats.AddResult(1, "Сложно", true);
+    stats.AddResult(1, "Сложно", false);
+    stats.AddResult(2, "Легко", true);
+    stats.AddResult(2, "Легко", true);
+    stats.AddResult(2, "Сложно", false);
+    stats.AddResult(2, "Сложно", false);
+    stats.AddResult(2, "Сложно", false);
+    stats.AddResult(3, "Легко", true);
+    stats.AddResult(3, "Легко", true);
+    stats.AddResult(3, "Сложно", true);
+    stats.AddResult(3, "Сложно", false);
+    stats.AddResult(3, "Сложно", false);
 
     EXPECT_EQ(stats.GetCategoryStats().at(1).GetPercent(), 80);
     EXPECT_EQ(stats.GetCategoryStats().at(2).GetPercent(), 40);
@@ -677,29 +661,29 @@ TEST(RecommendationTest, ExampleFromTaskDescription) {
     Recommendation rec = recommender.Analyze(stats);
     EXPECT_FALSE(rec.IsEmpty());
     EXPECT_EQ(rec.weak_category_ids, (std::vector<int>{ 2 }));
-    EXPECT_EQ(rec.weak_cost_bands, (std::vector<CostBand>{ CostBand::Hard }));
+    EXPECT_EQ(rec.weak_difficulties, (std::vector<std::string>{ "Сложно" }));
 
     auto categories = MakeCategories();
     EXPECT_EQ(recommender.BuildText(rec, categories),
-        "Рекомендуется потренировать тему «Кино» и вопросы стоимостью 400–500 баллов.");
+        "Рекомендуется потренировать тему «Кино» и вопросы уровня «Сложно».");
 }
 
 TEST(RecommendationTest, SeveralWeakSpotsSortedFromWeakest) {
     Statistics stats;
-    stats.AddResult(1, 100, true);
-    stats.AddResult(1, 300, false);
-    stats.AddResult(2, 300, false);
-    stats.AddResult(2, 500, false);
-    stats.AddResult(3, 100, true);
+    stats.AddResult(1, "Легко", true);
+    stats.AddResult(1, "Сложно", false);
+    stats.AddResult(2, "Сложно", false);
+    stats.AddResult(2, "Сложно", false);
+    stats.AddResult(3, "Легко", true);
 
     RecommendationSystem recommender;
     Recommendation rec = recommender.Analyze(stats);
     EXPECT_EQ(rec.weak_category_ids, (std::vector<int>{ 2, 1 }));
-    EXPECT_EQ(rec.weak_cost_bands, (std::vector<CostBand>{ CostBand::Medium, CostBand::Hard }));
+    EXPECT_EQ(rec.weak_difficulties, (std::vector<std::string>{ "Сложно" }));
 
     auto categories = MakeCategories();
     EXPECT_EQ(recommender.BuildText(rec, categories),
-        "Рекомендуется потренировать темы «Кино» и «История», а также вопросы стоимостью 300 баллов и 400–500 баллов.");
+        "Рекомендуется потренировать темы «Кино» и «История», а также вопросы уровня «Сложно».");
 }
 
 TEST(RecommendationTest, OnlyTopicsOrOnlyBands) {
@@ -712,9 +696,9 @@ TEST(RecommendationTest, OnlyTopicsOrOnlyBands) {
         "Рекомендуется потренировать темы «История», «Кино» и «Наука».");
 
     Recommendation bands_only;
-    bands_only.weak_cost_bands = { CostBand::Easy };
+    bands_only.weak_difficulties = { "Легко" };
     EXPECT_EQ(recommender.BuildText(bands_only, categories),
-        "Рекомендуется потренировать вопросы стоимостью 100–200 баллов.");
+        "Рекомендуется потренировать вопросы уровня «Легко».");
 
     Recommendation unknown_topic;
     unknown_topic.weak_category_ids = { 99 };
@@ -724,10 +708,10 @@ TEST(RecommendationTest, OnlyTopicsOrOnlyBands) {
 
 TEST(RecommendationTest, NoWeakSpotsAndCustomThreshold) {
     Statistics stats;
-    stats.AddResult(1, 100, true);
-    stats.AddResult(1, 400, true);
-    stats.AddResult(2, 300, true);
-    stats.AddResult(2, 500, false);
+    stats.AddResult(1, "Легко", true);
+    stats.AddResult(1, "Сложно", true);
+    stats.AddResult(2, "Сложно", true);
+    stats.AddResult(2, "Сложно", false);
 
     RecommendationSystem lenient(50);
     Recommendation rec = lenient.Analyze(stats);
@@ -744,4 +728,86 @@ TEST(RecommendationTest, NoWeakSpotsAndCustomThreshold) {
 
     Statistics empty_stats;
     EXPECT_TRUE(strict.Analyze(empty_stats).IsEmpty());
+}
+
+
+TEST(TrainingSessionTest, AbortEndsTrainingEarly) {
+    std::vector<std::shared_ptr<IQuestion>> questions = {
+        MakeQuestion(1, 1, 100, "а"),
+        MakeQuestion(2, 1, 200, "б"),
+        MakeQuestion(3, 2, 400, "в")
+    };
+
+    TrainingSession session;
+    session.LoadQuestions(questions);
+    session.SubmitAnswer("а");
+    EXPECT_FALSE(session.IsAborted());
+
+    session.Abort();
+    EXPECT_TRUE(session.IsAborted());
+    EXPECT_TRUE(session.IsFinished());
+    EXPECT_THROW(session.GetCurrentQuestion(), std::out_of_range);
+
+    // Unanswered questions are neither counted nor treated as mistakes
+    EXPECT_EQ(session.GetStatistics().GetTotal().total, 1);
+    EXPECT_TRUE(session.GetMistakes().empty());
+
+    session.LoadQuestions(questions);
+    EXPECT_FALSE(session.IsAborted());
+    EXPECT_FALSE(session.IsFinished());
+}
+
+TEST(TrainingSessionTest, DifficultyFilterAndStatistics) {
+    auto pool = MakePool(2);
+
+    TrainingSettings easy;
+    easy.difficulty = "Легко";
+    easy.question_count = 100;
+    TrainingSession session;
+    session.Generate(pool, easy);
+    ASSERT_EQ(session.GetQuestionCount(), 4);
+
+    while (!session.IsFinished()) {
+        EXPECT_EQ(session.GetCurrentQuestion()->GetDifficulty(), "Легко");
+        session.SubmitAnswer("");
+    }
+    ASSERT_EQ(session.GetStatistics().GetDifficultyStats().size(), 1);
+    EXPECT_EQ(session.GetStatistics().GetDifficultyStats().at("Легко").total, 4);
+}
+
+TEST(GameLoggerTest, NormalizeUserName) {
+    EXPECT_EQ(GameLogger::NormalizeUserName("  Иван  "), "Иван");
+    EXPECT_EQ(GameLogger::NormalizeUserName("Ив\tан\n"), "Иван");
+    EXPECT_EQ(GameLogger::NormalizeUserName("   "), "Игрок");
+    EXPECT_EQ(GameLogger::NormalizeUserName(""), "Игрок");
+}
+
+TEST(GameLoggerTest, WritesHistoryToFile) {
+    std::string path = "test_game_history.log";
+    std::filesystem::remove(path);
+
+    GameLogger logger(path);
+    EXPECT_EQ(logger.GetFilePath(), path);
+    EXPECT_TRUE(logger.LogClassicGame("Иван", 700, 4, 1));
+
+    Statistics stats;
+    stats.AddResult(1, "Легко", true);
+    stats.AddResult(1, "Сложно", false);
+    EXPECT_TRUE(logger.LogTraining("Иван", "Тренировка", stats, true));
+
+    std::ifstream file(path);
+    std::string content((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+    file.close();
+    std::filesystem::remove(path);
+
+    EXPECT_NE(content.find("Игрок: Иван | Режим: Классическая игра"), std::string::npos);
+    EXPECT_NE(content.find("Итоговый счет: 700"), std::string::npos);
+    EXPECT_NE(content.find("Режим: Тренировка (завершена досрочно)"), std::string::npos);
+    EXPECT_NE(content.find("Правильных ответов: 1 из 2 (50%)"), std::string::npos);
+    EXPECT_NE(content.find("Сложность «Сложно»: 0 из 1"), std::string::npos);
+}
+
+TEST(GameLoggerTest, ReportsUnwritablePath) {
+    GameLogger logger("nonexistent_dir_for_tests/history.log");
+    EXPECT_FALSE(logger.LogClassicGame("Иван", 0, 0, 0));
 }

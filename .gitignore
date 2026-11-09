@@ -32,6 +32,9 @@ docs/
 *.sqlite3
 *.db-journal
 
+# Game history log
+*.log
+
 # OS system files
 .DS_Store
 Thumbs.db
