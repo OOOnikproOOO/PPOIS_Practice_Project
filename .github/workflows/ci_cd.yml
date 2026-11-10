@@ -1,0 +1,124 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: 
+      - "main"
+      - "feature-*"
+    tags: [ "v*" ]
+  pull_request:
+    branches: [ "main", "feature-core_logic", "feature-statistics" ]
+
+permissions:
+  contents: write
+
+jobs:
+  quality:
+    name: Build, Test & Coverage (Windows)
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure CMake
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Debug
+
+      - name: Build OwnGameCore, OwnGame and UnitTests
+        run: cmake --build build --config Debug
+
+      - name: Install OpenCppCoverage
+        run: choco install opencppcoverage -y
+
+      - name: Run Tests with Code Coverage
+        shell: pwsh
+        run: |
+          $env:Path = "C:\Program Files\OpenCppCoverage;" + $env:Path
+          
+          OpenCppCoverage.exe `
+            --sources "$PWD\src" `
+            --sources "$PWD\include" `
+            --excluded_sources "*sqlite3*" `
+            --excluded_sources "*DatabaseSeeds*" `
+            --export_type "html:coverage_report" `
+            --export_type "cobertura:coverage.xml" `
+            -- "build\Debug\UnitTests.exe"
+
+          [xml]$covXml = Get-Content coverage.xml
+          $lineRate = [double]$covXml.coverage.'line-rate'
+          $totalCoverage = [math]::Round($lineRate * 100, 2)
+
+          Write-Host ""
+          Write-Host "==================================================" -ForegroundColor Cyan
+          Write-Host "   TOTAL PROJECT COVERAGE: $totalCoverage %" -ForegroundColor Green
+          Write-Host "==================================================" -ForegroundColor Cyan
+          Write-Host ""
+
+          if ($totalCoverage -lt 80.0) {
+              Write-Error "Total code coverage ($totalCoverage%) is below 80% threshold!"
+              exit 1
+          }
+
+      - name: Upload Coverage Report Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-coverage-report
+          path: coverage_report/
+
+  release:
+    name: Build Windows Release & Publish
+    needs: quality
+    runs-on: windows-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure CMake (Release)
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build Release
+        run: cmake --build build --config Release
+
+      - name: Package Artifact
+        shell: pwsh
+        run: |
+          mkdir dist
+          Copy-Item "build/Release/OwnGame.exe" -Destination "dist/"
+          Copy-Item "assets" -Destination "dist/assets" -Recurse
+          attrib +h "dist\assets" /D
+          Compress-Archive -Path "dist/*" -DestinationPath "OwnGame-Windows-x64.zip" -Force
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: OwnGame-Windows-x64.zip
+          name: "OwnGame v0.2.0 — Second Playable Prototype"
+          body: |
+            Автоматический релиз второго игрового прототипа "Своя игра" (OwnGame v0.2.0):
+            - Появился режим "Тренировка"
+            - Пополнена локальная база вопросов с 66 темами
+            В архиве: исполняемый файл `OwnGame.exe` и папка с ресурсами `assets/`.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  gui:
+    name: Qt GUI and integration tests (Linux)
+    runs-on: ubuntu-latest
+    env:
+      QT_QPA_PLATFORM: offscreen
+      QT_QUICK_BACKEND: software
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.8.3'
+          modules: 'qtmultimedia'
+          cache: true
+      - name: Configure GUI and tests
+        run: cmake -S . -B build -DOWNGAME_BUILD_GUI=ON -DCMAKE_BUILD_TYPE=Debug
+      - name: Build
+        run: cmake --build build --parallel 2
+      - name: Test core and GUI
+        run: ctest --test-dir build --output-on-failure

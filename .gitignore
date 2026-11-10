@@ -1,4 +1,4 @@
-# Скомпилированные файлы и бинарники
+# Compiled files and binaries
 *.o
 *.obj
 *.out
@@ -9,27 +9,42 @@
 *.a
 *.lib
 
-# Папки сборок (CMake и другие системы сборки)
+# Build folders (CMake and other build systems)
 build/
 out/
 bin/
 cmake-build-*/
+docs/
 
-# Файлы сред разработки (IDE)
+# Integrated Development Environment (IDE) files
 .idea/
 .vscode/
+.vs/
 *.sln
 *.vcxproj
 *.vcxproj.filters
 *.vcxproj.user
 *.suo
 
-# Локальные базы данных SQLite (чтобы тестовые данные участников не конфликтовали)
+# Local SQLite databases
 *.db
 *.sqlite
 *.sqlite3
 *.db-journal
 
-# Системные файлы ОС
+# OS system files
 .DS_Store
 Thumbs.db
+# Optional GUI / console verification builds
+build-*/
+
+# Qt Creator settings and local CMake presets
+CMakeLists.txt.user*
+CMakeUserPresets.json
+.qtcreator/
+.qtc_clangd/
+*.qmlproject.user*
+
+# Generated test coverage
+coverage_report/
+coverage.xml
