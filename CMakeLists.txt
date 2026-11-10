@@ -47,7 +47,7 @@ add_executable(UnitTests tests/tests.cpp tests/gui_core_tests.cpp)
 target_link_libraries(UnitTests PRIVATE OwnGameCore GTest::gtest_main)
 
 include(GoogleTest)
-gtest_discover_tests(UnitTests)
+gtest_discover_tests(UnitTests DISCOVERY_TIMEOUT 60)
 option(OWNGAME_BUILD_GUI "Build the Qt 6 retro desktop interface" OFF)
 if(OWNGAME_BUILD_GUI)
     find_package(Qt6 6.5 REQUIRED COMPONENTS Quick QuickControls2 Multimedia)
