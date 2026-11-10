@@ -18,6 +18,7 @@ public:
     QVariantMap state() const;
     QVariantList categories() const;
     Q_INVOKABLE void startClassic(const QString& name);
+    Q_INVOKABLE int availableQuestions(const QVariantList& ids, int minCost, int maxCost) const;
     Q_INVOKABLE void startTraining(const QString& name, const QVariantList& ids, int minCost, int maxCost, int count);
     Q_INVOKABLE void select(int cell);
     Q_INVOKABLE void catStake(int stake);
@@ -28,10 +29,12 @@ public:
     Q_INVOKABLE void nextBoard();
     Q_INVOKABLE void finish();
     Q_INVOKABLE void menu();
+    Q_INVOKABLE void shutdown();
     Q_INVOKABLE void showHistory();
     Q_INVOKABLE void reviewMistakes();
     Q_INVOKABLE void setEffects(bool on);
     Q_INVOKABLE void setCurvature(bool on);
+    Q_INVOKABLE void setFullScreen(bool on);
 signals:
     void changed();
     void questionOpened();
@@ -61,6 +64,7 @@ private:
     QTimer roundTimer;
     bool revealing = false;
     bool curvature = false;
+    bool fullScreen = false, answerViewed = false;
     bool music = true, sounds = true;
     double musicVolume = 0.22, soundVolume = 0.6;
 };
